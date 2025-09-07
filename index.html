@@ -151,7 +151,7 @@
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow mb-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                                <div id="bdr-filter-container-historico" style="display: none;">
+                                <div id="bdr-filter-container-historico">
                                     <label for="filter-historico-bdr" class="block text-sm font-medium text-gray-700">BDR</label>
                                     <select id="filter-historico-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select>
                                 </div>
@@ -269,18 +269,12 @@
         dom.logoutButton.addEventListener('click', () => db.auth.signOut());
 
         const adjustUIForRole = () => {
-            const bdrFilterContainer = document.getElementById('bdr-filter-container');
             const metaBdrContainer = document.getElementById('meta-bdr-container');
-            const historicoBdrContainer = document.getElementById('bdr-filter-container-historico');
-
-            if (currentUserProfile?.role === 'admin') {
-                if(bdrFilterContainer) bdrFilterContainer.style.display = 'block';
-                if(metaBdrContainer) metaBdrContainer.style.display = 'block';
-                if(historicoBdrContainer) historicoBdrContainer.style.display = 'block';
-            } else {
-                if(bdrFilterContainer) bdrFilterContainer.style.display = 'none';
+            // BDRs cannot set metas for other users, only admins can.
+            if (currentUserProfile?.role !== 'admin') {
                 if(metaBdrContainer) metaBdrContainer.style.display = 'none';
-                if(historicoBdrContainer) historicoBdrContainer.style.display = 'none';
+            } else {
+                 if(metaBdrContainer) metaBdrContainer.style.display = 'block';
             }
         };
 
@@ -332,12 +326,14 @@
             const { data, error } = await query;
 
             dom.propostasLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); return; }
-            dom.propostasTableBody.innerHTML = data.map(p => `
+            dom.propostasTableBody.innerHTML = data.map(p => {
+                const canEdit = currentUserProfile?.role === 'admin' || p.user_id === currentUserProfile?.id;
+                return `
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap">${p.nome_cliente}</td><td class="px-6 py-4 whitespace-nowrap">${formatCurrency(p.valor)}</td><td class="px-6 py-4 whitespace-nowrap">${formatDateBR(p.data_proposta)}</td><td class="px-6 py-4 whitespace-nowrap">${formatDateBR(p.data_fechamento)}</td>
                     <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-${p.status.toLowerCase()}">${p.status}</span></td><td class="px-6 py-4 whitespace-nowrap">${p.bdr_nome}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${p.status === 'Pendente' ? `<div class="flex space-x-2"><button data-id="${p.id}" class="btn-ganha btn-success text-xs font-bold py-1 px-2 rounded">Ganha</button><button data-id="${p.id}" class="btn-perdida btn-danger text-xs font-bold py-1 px-2 rounded">Perdida</button></div>` : '-'}</td>
-                </tr>`).join('');
+                    <td class="px-6 py-4 whitespace-nowrap">${(p.status === 'Pendente' && canEdit) ? `<div class="flex space-x-2"><button data-id="${p.id}" class="btn-ganha btn-success text-xs font-bold py-1 px-2 rounded">Ganha</button><button data-id="${p.id}" class="btn-perdida btn-danger text-xs font-bold py-1 px-2 rounded">Perdida</button></div>` : (p.status !== 'Pendente' ? '-' : '<span class="text-xs text-gray-400"></span>')}</td>
+                </tr>`}).join('');
         };
         const updateProposalStatus = async (id, status) => {
             dom.globalLoader.classList.remove('hidden'); const update = { status, data_fechamento: status === 'Ganha' ? formatDate(new Date()) : null };
@@ -357,10 +353,11 @@
         
             let query = db.from('prospeccao_diaria').select('*').order('data', { ascending: false });
 
-            if (currentUserProfile?.role === 'admin') {
-                const bdrName = document.getElementById('filter-historico-bdr').value;
-                if (bdrName !== 'todos') query = query.eq('bdr_nome', bdrName);
+            const bdrName = document.getElementById('filter-historico-bdr').value;
+            if (bdrName !== 'todos') {
+                query = query.eq('bdr_nome', bdrName);
             }
+            
             if (startDate) query = query.gte('data', startDate);
             if (endDate) query = query.lte('data', endDate);
             
@@ -400,7 +397,7 @@
             const bdrName = document.getElementById('filter-bdr').value;
             let dailyQuery = db.from('prospeccao_diaria').select('*'); let proposalsQuery = db.from('propostas').select('bdr_nome, status, valor, data_proposta');
             
-            if (currentUserProfile?.role === 'admin' && bdrName !== 'todos') { 
+            if (bdrName !== 'todos') { 
                 dailyQuery = dailyQuery.eq('bdr_nome', bdrName); 
                 proposalsQuery = proposalsQuery.eq('bdr_nome', bdrName); 
             }
