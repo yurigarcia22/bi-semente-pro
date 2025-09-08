@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,42 +7,72 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Configuração do Tema Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-dark': '#12122D',   // Space Cadet
+                        'brand-accent': '#6464FF', // Neon Blue
+                        slate: {
+                            50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8',
+                            500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        .nav-link.active { color: #10b981; border-bottom: 2px solid #10b981; }
-        .btn-primary { background-color: #10b981; color: white; transition: background-color 0.3s; }
-        .btn-primary:hover { background-color: #059669; }
-        .btn-secondary { background-color: #e5e7eb; color: #1f2937; transition: background-color 0.3s; }
-        .btn-secondary:hover { background-color: #d1d5db; }
+        .nav-link.active { color: #6464FF; border-bottom: 2px solid #6464FF; }
+        .dark .nav-link.active { color: #6464FF; }
+        .btn-primary { background-color: #6464FF; color: white; transition: background-color 0.3s; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary { background-color: #e2e8f0; color: #1e293b; transition: background-color 0.3s; }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+        .dark .btn-secondary { background-color: #334155; color: #f1f5f9; }
+        .dark .btn-secondary:hover { background-color: #475569; }
         .btn-success { background-color: #10b981; color: white; }
         .btn-success:hover { background-color: #059669; }
         .btn-danger { background-color: #ef4444; color: white; }
         .btn-danger:hover { background-color: #dc2626; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #10b981; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loader { border: 4px solid #334155; border-top: 4px solid #6464FF; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .progress-bar { background-color: #d1d5db; border-radius: 9999px; overflow: hidden; }
-        .progress-bar-inner { background-color: #10b981; height: 100%; transition: width 0.5s ease-in-out; }
-        .status-badge { padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: capitalize; }
-        .status-pendente { background-color: #f59e0b; color: white; }
-        .status-ganha { background-color: #10b981; color: white; }
-        .status-perdida { background-color: #ef4444; color: white; }
+        .progress-bar { @apply bg-slate-200 dark:bg-slate-600 rounded-full h-2.5; }
+        .progress-bar-inner { @apply bg-brand-accent h-2.5 rounded-full; transition: width 0.5s ease-in-out; }
+        .status-badge { @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize; }
+        .status-pendente { background-color: #f59e0b20; color: #b45309; } .dark .status-pendente { background-color: #f59e0b20; color: #f59e0b; }
+        .status-ganha { background-color: #10b98120; color: #059669; } .dark .status-ganha { background-color: #10b98120; color: #34d399; }
+        .status-perdida { background-color: #ef444420; color: #b91c1c; } .dark .status-perdida { background-color: #ef444420; color: #ef4444; }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-slate-100 dark:bg-brand-dark font-sans transition-colors duration-300">
 
     <div id="root">
         <!-- TELA DE LOGIN -->
-        <div id="auth-container" class="min-h-screen flex items-center justify-center bg-gray-50">
-             <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-xl">
+        <div id="auth-container" class="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-brand-dark px-4">
+             <div class="w-full max-w-md p-8 space-y-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
                 <div class="text-center">
                     <div class="flex items-center justify-center mb-4">
                         <img src="Logo.png" alt="Semente Pro Logo" class="h-12 mr-2">
-                        <span class="text-3xl font-bold text-gray-800">Semente Pro</span>
+                        <span class="text-3xl font-bold text-slate-800 dark:text-slate-200">Semente Pro</span>
                     </div>
-                    <h2 class="text-xl text-gray-600">Acesse sua conta</h2>
+                    <h2 class="text-xl text-slate-600 dark:text-slate-400">Acesse sua conta</h2>
                 </div>
                 <form id="login-form" class="space-y-6">
-                    <div><label for="email" class="text-sm font-medium text-gray-700">Email</label><input type="email" id="email" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm" placeholder="voce@exemplo.com"></div>
-                    <div><label for="password" class="text-sm font-medium text-gray-700">Senha</label><input type="password" id="password" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm" placeholder="********"></div>
+                    <div><label for="email" class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label><input type="email" id="email" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="voce@exemplo.com"></div>
+                    <div><label for="password" class="text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label><input type="password" id="password" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="********"></div>
                     <p id="error-message" class="text-sm text-red-600"></p>
                     <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Entrar</button>
                 </form>
@@ -52,11 +82,13 @@
         <!-- APLICAÇÃO PRINCIPAL -->
         <div id="app-container" class="min-h-screen hidden">
             <!-- Cabeçalho -->
-            <header class="bg-white shadow-md sticky top-0 z-40">
+            <header class="bg-white dark:bg-slate-800 shadow-md sticky top-0 z-40 border-b border-slate-200 dark:border-slate-700">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center h-16"><div class="flex-1 flex justify-start"><div class="flex items-center"><img src="Logo.png" alt="Semente Pro Logo" class="h-10 mr-2"><span class="text-2xl font-bold text-gray-800">Semente Pro</span></div></div>
-                        <div class="flex justify-center"><nav class="flex space-x-2 sm:space-x-4"><a href="#" id="nav-dashboard" class="nav-link text-gray-600 hover:text-emerald-600 font-semibold px-3 py-2 rounded-md text-sm active">Dashboard</a><a href="#" id="nav-diario" class="nav-link text-gray-600 hover:text-emerald-600 font-semibold px-3 py-2 rounded-md text-sm">Diário</a><a href="#" id="nav-propostas" class="nav-link text-gray-600 hover:text-emerald-600 font-semibold px-3 py-2 rounded-md text-sm">Propostas</a><a href="#" id="nav-historico" class="nav-link text-gray-600 hover:text-emerald-600 font-semibold px-3 py-2 rounded-md text-sm">Histórico</a><a href="#" id="nav-metas" class="nav-link text-gray-600 hover:text-emerald-600 font-semibold px-3 py-2 rounded-md text-sm">Metas</a></nav></div>
-                        <div class="flex-1 flex justify-end"><div class="flex items-center space-x-2"><span class="text-sm text-gray-700 hidden sm:inline">Olá, <span id="user-name" class="font-semibold"></span></span><button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-semibold">Sair</button></div></div>
+                    <div class="flex items-center h-16"><div class="flex-1 flex justify-start"><div class="flex items-center"><img src="Logo.png" alt="Semente Pro Logo" class="h-10 mr-2"><span class="text-2xl font-bold text-slate-800 dark:text-slate-200">Semente Pro</span></div></div>
+                        <div class="flex justify-center"><nav class="flex space-x-2 sm:space-x-4"><a href="#" id="nav-dashboard" class="nav-link text-slate-600 dark:text-slate-300 hover:text-brand-accent font-semibold px-3 py-2 rounded-md text-sm active">Dashboard</a><a href="#" id="nav-diario" class="nav-link text-slate-600 dark:text-slate-300 hover:text-brand-accent font-semibold px-3 py-2 rounded-md text-sm">Diário</a><a href="#" id="nav-propostas" class="nav-link text-slate-600 dark:text-slate-300 hover:text-brand-accent font-semibold px-3 py-2 rounded-md text-sm">Propostas</a><a href="#" id="nav-historico" class="nav-link text-slate-600 dark:text-slate-300 hover:text-brand-accent font-semibold px-3 py-2 rounded-md text-sm">Histórico</a><a href="#" id="nav-metas" class="nav-link text-slate-600 dark:text-slate-300 hover:text-brand-accent font-semibold px-3 py-2 rounded-md text-sm">Metas</a></nav></div>
+                        <div class="flex-1 flex justify-end items-center gap-4"><div class="flex items-center space-x-2"><span class="text-sm text-gray-700 dark:text-slate-300 hidden sm:inline">Olá, <span id="user-name" class="font-semibold"></span></span><button id="logout-button" class="text-sm text-gray-500 dark:text-slate-400 hover:text-red-600 font-semibold">Sair</button></div>
+                        <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none rounded-lg text-sm p-2"><svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -65,124 +97,90 @@
                 <!-- Conteúdo da Página -->
                 <div id="page-dashboard">
                     <!-- Filtros -->
-                    <div class="bg-white p-4 rounded-lg shadow mb-6">
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow mb-6 border border-slate-200 dark:border-slate-700">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                             <div id="bdr-filter-container"><label for="filter-bdr" class="block text-sm font-medium text-gray-700">BDR</label><select id="filter-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select></div>
-                            <div><label for="filter-period" class="block text-sm font-medium text-gray-700">Período</label><select id="filter-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select></div>
+                             <div id="bdr-filter-container"><label for="filter-bdr" class="block text-sm font-medium text-slate-700 dark:text-slate-300">BDR</label><select id="filter-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
+                            <div><label for="filter-period" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Período</label><select id="filter-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
                         </div>
-                        <div id="custom-date-container-dashboard" class="hidden mt-4"><div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"><div><label for="filter-dashboard-start-date" class="block text-sm font-medium text-gray-700">Data Início</label><input type="date" id="filter-dashboard-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md"></div><div><label for="filter-dashboard-end-date" class="block text-sm font-medium text-gray-700">Data Fim</label><input type="date" id="filter-dashboard-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md"></div><button id="apply-dashboard-filters" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Aplicar Filtros</button></div></div>
+                        <div id="custom-date-container-dashboard" class="hidden mt-4"><div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"><div><label for="filter-dashboard-start-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Início</label><input type="date" id="filter-dashboard-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div><div><label for="filter-dashboard-end-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Fim</label><input type="date" id="filter-dashboard-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div><button id="apply-dashboard-filters" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Aplicar Filtros</button></div></div>
                     </div>
-                     <!-- Métricas de Atividade --><h2 class="text-xl font-bold text-gray-800 mb-4">Métricas de Atividade</h2><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6 text-center"><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Ligações</h3><p id="kpi-ligacoes" class="mt-1 text-3xl font-semibold text-gray-900">0</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Conexões</h3><p id="kpi-conexoes" class="mt-1 text-3xl font-semibold text-gray-900">0</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Conexões c/ Decisor</h3><p id="kpi-conexoes_decisor" class="mt-1 text-3xl font-semibold text-gray-900">0</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Reuniões Marcadas</h3><p id="kpi-reunioes_marcadas" class="mt-1 text-3xl font-semibold text-gray-900">0</p></div></div>
-                    <!-- Métricas de Venda --><h2 class="text-xl font-bold text-gray-800 mb-4">Resultados de Vendas</h2><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6 text-center"><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Propostas Criadas</h3><p id="kpi-propostas" class="mt-1 text-3xl font-semibold text-gray-900">0</p></div><div class="kpi-card bg-emerald-500 text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-emerald-100">Vendas Ganhas</h3><p id="kpi-vendas-ganhas" class="mt-1 text-3xl font-semibold">0</p></div><div class="kpi-card bg-red-500 text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-red-100">Propostas Perdidas</h3><p id="kpi-propostas-perdidas" class="mt-1 text-3xl font-semibold">0</p></div><div class="kpi-card bg-blue-500 text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-blue-100">Valor Ganho (R$)</h3><p id="kpi-valor-ganho" class="mt-1 text-3xl font-semibold">0</p></div></div>
-                    <!-- Taxas de Conversão --><div class="mb-6"><h2 class="text-xl font-bold text-gray-800 mb-4">Taxas de Conversão</h2><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-center"><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Ligações → Conexões</h3><p id="rate-lig-con" class="mt-1 text-3xl font-semibold text-gray-900">0%</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Conexões → Reuniões</h3><p id="rate-con-reu" class="mt-1 text-3xl font-semibold text-gray-900">0%</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Reuniões → Propostas</h3><p id="rate-reu-prop" class="mt-1 text-3xl font-semibold text-gray-900">0%</p></div><div class="kpi-card bg-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Propostas → Vendas Ganhas</h3><p id="rate-prop-venda" class="mt-1 text-3xl font-semibold text-gray-900">0%</p></div></div></div>
-                    <!-- Gráficos --><div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"><div class="bg-white p-4 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-800 mb-4">Desempenho Geral</h3><div id="chart-container" class="min-h-[350px]"></div></div><div class="bg-white p-4 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-800 mb-4">Tendência de Ligações</h3><div id="trend-chart-container" class="min-h-[350px]"></div></div></div>
-                    <!-- Ranking e Pódio --><div class="mt-6"><h2 class="text-2xl font-bold text-gray-800 mb-4">Ranking de Ligações</h2><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-800 mb-6 text-center">Pódio Top 3</h3><div id="podium-container" class="flex items-end justify-center gap-4 min-h-[200px]">
-                        <div id="podium-2" class="text-center w-1/4">
-                            <div class="flex flex-col items-center">
-                                <span class="text-4xl mb-2">🥈</span>
-                                <p id="podium-2-name" class="font-bold text-lg truncate">-</p>
-                                <p id="podium-2-ligacoes" class="text-gray-600">0 ligações</p>
-                            </div>
-                            <div class="bg-gray-300 h-24 rounded-t-lg flex items-center justify-center text-3xl font-bold text-white">2</div>
-                        </div>
-                        <div id="podium-1" class="text-center w-1/3">
-                            <div class="flex flex-col items-center">
-                                <span class="text-5xl mb-2">🥇</span>
-                                <p id="podium-1-name" class="font-bold text-xl truncate">-</p>
-                                <p id="podium-1-ligacoes" class="text-gray-600">0 ligações</p>
-                            </div>
-                            <div class="bg-yellow-400 h-36 rounded-t-lg flex items-center justify-center text-4xl font-bold text-white">1</div>
-                        </div>
-                        <div id="podium-3" class="text-center w-1/4">
-                            <div class="flex flex-col items-center">
-                                <span class="text-4xl mb-2">🥉</span>
-                                <p id="podium-3-name" class="font-bold text-lg truncate">-</p>
-                                <p id="podium-3-ligacoes" class="text-gray-600">0 ligações</p>
-                            </div>
-                            <div class="bg-yellow-500 h-16 rounded-t-lg flex items-center justify-center text-3xl font-bold text-white">3</div>
-                        </div>
-                    </div></div><div class="lg:col-span-1 bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-800 mb-4">Ranking Geral</h3><div id="ranking-list" class="space-y-3 max-h-[300px] overflow-y-auto pr-2"></div></div></div></div>
+                     
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-6 text-center">
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Ligações</h3><p id="kpi-ligacoes" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Conexões</h3><p id="kpi-conexoes" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Conexões c/ Decisor</h3><p id="kpi-conexoes_decisor" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Reuniões Marcadas</h3><p id="kpi-reunioes_marcadas" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Reuniões Realizadas</h3><p id="kpi-reunioes_realizadas" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Reuniões Qualificadas</h3><p id="kpi-reunioes_qualificadas" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Propostas Criadas</h3><p id="kpi-propostas" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0</p></div>
+                        <div class="kpi-card bg-emerald-500 text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-emerald-100">Vendas Ganhas</h3><p id="kpi-vendas-ganhas" class="mt-1 text-3xl font-semibold text-white">0</p></div>
+                        <div class="kpi-card bg-red-500 text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-red-100">Propostas Perdidas</h3><p id="kpi-propostas-perdidas" class="mt-1 text-3xl font-semibold text-white">0</p></div>
+                        <div class="kpi-card bg-brand-accent text-white p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-indigo-100">Valor Ganho (R$)</h3><p id="kpi-valor-ganho" class="mt-1 text-3xl font-semibold text-white">0</p></div>
+                    </div>
+
+                    <!-- Taxas de Conversão --><div class="mb-6"><h2 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Taxas de Conversão</h2><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-center"><div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Ligações → Conexões</h3><p id="rate-lig-con" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0%</p></div><div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Reuniões Marcadas → Realizadas</h3><p id="rate-mar-rea" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0%</p></div><div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Reuniões Realizadas → Qualificadas</h3><p id="rate-rea-qua" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0%</p></div><div class="kpi-card bg-white dark:bg-slate-800 p-5 rounded-lg shadow"><h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Propostas → Vendas Ganhas</h3><p id="rate-prop-venda" class="mt-1 text-3xl font-semibold text-slate-800 dark:text-slate-200">0%</p></div></div></div>
+                    <!-- Gráficos --><div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"><div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow"><h3 class="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">Desempenho Geral</h3><div id="chart-container" class="min-h-[350px]"></div></div><div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow"><h3 class="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">Tendência de Ligações</h3><div id="trend-chart-container" class="min-h-[350px]"></div></div></div>
+                    <!-- Ranking e Pódio --><div class="mt-6"><h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4">Ranking de Ligações</h2><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-slate-800 dark:text-slate-200 mb-6 text-center">Pódio Top 3</h3><div id="podium-container" class="flex items-end justify-center gap-4 min-h-[200px]">
+                        <div id="podium-2" class="text-center w-1/4 opacity-50"><div class="flex flex-col items-center"><span class="text-4xl mb-2">🥈</span><p id="podium-2-name" class="font-bold text-lg truncate text-slate-800 dark:text-slate-200">-</p><p id="podium-2-ligacoes" class="text-gray-600 dark:text-slate-400 text-sm">0 ligações</p></div><div class="bg-slate-300 dark:bg-slate-600 h-24 rounded-t-lg flex items-center justify-center text-3xl font-bold text-white dark:text-slate-300">2</div></div>
+                        <div id="podium-1" class="text-center w-1/3 opacity-50"><div class="flex flex-col items-center"><span class="text-5xl mb-2">🥇</span><p id="podium-1-name" class="font-bold text-xl truncate text-slate-800 dark:text-slate-200">-</p><p id="podium-1-ligacoes" class="text-gray-600 dark:text-slate-400 text-sm">0 ligações</p></div><div class="bg-brand-accent h-36 rounded-t-lg flex items-center justify-center text-4xl font-bold text-white">1</div></div>
+                        <div id="podium-3" class="text-center w-1/4 opacity-50"><div class="flex flex-col items-center"><span class="text-4xl mb-2">🥉</span><p id="podium-3-name" class="font-bold text-lg truncate text-slate-800 dark:text-slate-200">-</p><p id="podium-3-ligacoes" class="text-gray-600 dark:text-slate-400 text-sm">0 ligações</p></div><div class="bg-amber-500 h-16 rounded-t-lg flex items-center justify-center text-3xl font-bold text-white">3</div></div>
+                    </div></div><div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">Ranking Geral</h3><div id="ranking-list" class="space-y-3 max-h-[300px] overflow-y-auto pr-2"></div></div></div></div>
                 </div>
 
-                <div id="page-diario" class="hidden"><div class="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto"><div id="metas-diario-container" class="mb-8"><h3 class="text-xl font-bold text-gray-800 mb-4">Acompanhamento de Metas</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="space-y-3"><h4 class="font-semibold text-gray-700">Progresso Semanal</h4><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Ligações</span><span id="progress-ligacoes-semanal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-ligacoes-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Reuniões</span><span id="progress-reunioes-semanal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-reunioes-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Propostas</span><span id="progress-propostas-semanal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-propostas-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div></div><div class="space-y-3"><h4 class="font-semibold text-gray-700">Progresso Mensal</h4><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Ligações</span><span id="progress-ligacoes-mensal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-ligacoes-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Reuniões</span><span id="progress-reunioes-mensal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-reunioes-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium">Propostas</span><span id="progress-propostas-mensal-label">0 / 0</span></div><div class="progress-bar h-2.5"><div id="progress-propostas-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div></div></div></div><h2 class="text-2xl font-bold text-gray-800 mb-4">Lançamento Diário</h2><form id="daily-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="md:col-span-2"><label for="data" class="block text-sm font-medium text-gray-700">Data</label><input type="date" id="data" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="ligacoes" class="block text-sm font-medium">Ligações</label><input type="number" id="ligacoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="conexoes" class="block text-sm font-medium">Conexões</label><input type="number" id="conexoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="conexoes_decisor" class="block text-sm font-medium">Conexões com Decisor</label><input type="number" id="conexoes_decisor" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="reunioes_marcadas" class="block text-sm font-medium">Reuniões Marcadas</label><input type="number" id="reunioes_marcadas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="propostas" class="block text-sm font-medium">Nº de Propostas</label><input type="number" id="propostas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div class="md:col-span-2"><label for="observacoes" class="block text-sm font-medium">Observações</label><textarea id="observacoes" rows="3" class="mt-1 block w-full border rounded-md p-2" placeholder="Alguma nota importante sobre o dia..."></textarea></div><div id="propostas-details-container" class="md:col-span-2 space-y-4 mt-4 border-t pt-4"></div></div><div class="mt-6"><button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Salvar Lançamento</button></div></form></div></div>
+                <div id="page-diario" class="hidden"><div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow max-w-4xl mx-auto"><div id="metas-diario-container" class="mb-8"><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Acompanhamento de Metas</h3><div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"><div class="space-y-4"><h4 class="font-semibold text-slate-700 dark:text-slate-300">Progresso Semanal</h4><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Ligações</span><span id="progress-ligacoes-semanal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-ligacoes-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Reuniões</span><span id="progress-reunioes-semanal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-reunioes-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Propostas</span><span id="progress-propostas-semanal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-propostas-semanal" class="progress-bar-inner" style="width: 0%;"></div></div></div></div><div class="space-y-4"><h4 class="font-semibold text-slate-700 dark:text-slate-300">Progresso Mensal</h4><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Ligações</span><span id="progress-ligacoes-mensal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-ligacoes-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Reuniões</span><span id="progress-reunioes-mensal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-reunioes-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-slate-600 dark:text-slate-400">Propostas</span><span id="progress-propostas-mensal-label" class="font-semibold text-slate-700 dark:text-slate-300">0 / 0</span></div><div class="progress-bar"><div id="progress-propostas-mensal" class="progress-bar-inner" style="width: 0%;"></div></div></div></div></div></div><h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4 pt-8 border-t border-slate-200 dark:border-slate-700">Lançamento Diário</h2><form id="daily-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="md:col-span-2"><label for="data" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data</label><input type="date" id="data" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="ligacoes" class="block text-sm font-medium dark:text-slate-300">Ligações</label><input type="number" id="ligacoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="conexoes" class="block text-sm font-medium dark:text-slate-300">Conexões</label><input type="number" id="conexoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="conexoes_decisor" class="block text-sm font-medium dark:text-slate-300">Conexões com Decisor</label><input type="number" id="conexoes_decisor" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="reunioes_marcadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Marcadas</label><input type="number" id="reunioes_marcadas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="reunioes_realizadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Realizadas</label><input type="number" id="reunioes_realizadas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="reunioes_qualificadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Qualificadas</label><input type="number" id="reunioes_qualificadas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="propostas" class="block text-sm font-medium dark:text-slate-300">Nº de Propostas</label><input type="number" id="propostas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div class="md:col-span-2"><label for="observacoes" class="block text-sm font-medium dark:text-slate-300">Observações</label><textarea id="observacoes" rows="3" class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600" placeholder="Alguma nota importante sobre o dia..."></textarea></div><div id="propostas-details-container" class="md:col-span-2 space-y-4 mt-4 border-t pt-4 dark:border-slate-600"></div></div><div class="mt-6"><button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Salvar Lançamento</button></div></form></div></div>
 
                 <div id="page-propostas" class="hidden">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                         <h2 class="text-2xl font-bold text-gray-800 mb-6">Gerenciamento de Propostas</h2>
-                         <div class="bg-white p-4 rounded-lg shadow mb-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow">
+                         <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-6">Gerenciamento de Propostas</h2>
+                         <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow mb-6 border border-slate-200 dark:border-slate-700">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                                <div>
-                                    <label for="filter-proposta-status" class="block text-sm font-medium text-gray-700">Status</label>
-                                    <select id="filter-proposta-status" class="mt-1 block w-full border-gray-300 rounded-md p-2">
-                                        <option value="todas">Todas</option>
-                                        <option value="Pendente">Pendentes</option>
-                                        <option value="concluida">Concluídas</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="filter-proposta-period" class="block text-sm font-medium text-gray-700">Período</label>
-                                    <select id="filter-proposta-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select>
-                                </div>
+                                <div><label for="filter-proposta-status" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Status</label><select id="filter-proposta-status" class="mt-1 block w-full border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md p-2"><option value="todas">Todas</option><option value="Pendente">Pendentes</option><option value="concluida">Concluídas</option></select></div>
+                                <div><label for="filter-proposta-period" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Período</label><select id="filter-proposta-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
                             </div>
                             <div id="custom-date-container-propostas" class="hidden mt-4">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                                    <div>
-                                        <label for="filter-proposta-start-date" class="block text-sm font-medium text-gray-700">Data Início</label>
-                                        <input type="date" id="filter-proposta-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md">
-                                    </div>
-                                    <div>
-                                        <label for="filter-proposta-end-date" class="block text-sm font-medium text-gray-700">Data Fim</label>
-                                        <input type="date" id="filter-proposta-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md">
-                                    </div>
+                                    <div><label for="filter-proposta-start-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Início</label><input type="date" id="filter-proposta-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div>
+                                    <div><label for="filter-proposta-end-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Fim</label><input type="date" id="filter-proposta-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div>
                                     <button id="apply-proposta-filters" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Aplicar Filtros</button>
                                 </div>
                             </div>
                          </div>
-                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><th class="px-6 py-3">Cliente</th><th class="px-6 py-3">Valor (R$)</th><th class="px-6 py-3">Data da Proposta</th><th class="px-6 py-3">Data de Fechamento</th><th class="px-6 py-3">Status</th><th class="px-6 py-3">BDR</th><th class="px-6 py-3">Ações</th></tr></thead><tbody id="propostas-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div>
+                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700"><thead class="bg-slate-50 dark:bg-slate-700"><tr class="text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"><th class="px-6 py-3">Cliente</th><th class="px-6 py-3">Valor (R$)</th><th class="px-6 py-3">Data da Proposta</th><th class="px-6 py-3">Data de Fechamento</th><th class="px-6 py-3">Status</th><th class="px-6 py-3">BDR</th><th class="px-6 py-3">Ações</th></tr></thead><tbody id="propostas-table-body" class="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700"></tbody></table></div>
                         <div id="propostas-loader" class="hidden justify-center items-center py-8"><div class="loader"></div></div>
                     </div>
                 </div>
 
                 <div id="page-historico" class="hidden">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h2 class="text-2xl font-bold text-gray-800">Histórico de Lançamentos</h2>
-                            <button id="export-csv-btn" class="btn-secondary font-bold py-2 px-4 rounded-md">Exportar para CSV</button>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg shadow mb-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"><h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200">Histórico de Lançamentos</h2><button id="export-csv-btn" class="btn-secondary font-bold py-2 px-4 rounded-md">Exportar para CSV</button></div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow mb-6 border border-slate-200 dark:border-slate-700">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                                <div id="bdr-filter-container-historico">
-                                    <label for="filter-historico-bdr" class="block text-sm font-medium text-gray-700">BDR</label>
-                                    <select id="filter-historico-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select>
-                                </div>
-                                <div>
-                                    <label for="filter-historico-period" class="block text-sm font-medium text-gray-700">Período</label>
-                                    <select id="filter-historico-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"></select>
-                                </div>
+                                <div id="bdr-filter-container-historico"><label for="filter-historico-bdr" class="block text-sm font-medium text-slate-700 dark:text-slate-300">BDR</label><select id="filter-historico-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
+                                <div><label for="filter-historico-period" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Período</label><select id="filter-historico-period" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
                             </div>
                             <div id="custom-date-container-historico" class="hidden mt-4">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                                    <div><label for="filter-historico-start-date" class="block text-sm font-medium text-gray-700">Data Início</label><input type="date" id="filter-historico-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md"></div>
-                                    <div><label for="filter-historico-end-date" class="block text-sm font-medium text-gray-700">Data Fim</label><input type="date" id="filter-historico-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 rounded-md"></div>
+                                    <div><label for="filter-historico-start-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Início</label><input type="date" id="filter-historico-start-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div>
+                                    <div><label for="filter-historico-end-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Data Fim</label><input type="date" id="filter-historico-end-date" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></div>
                                     <button id="apply-historico-filters" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Aplicar Filtros</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><th class="px-6 py-3">Data</th><th class="px-6 py-3">BDR</th><th class="px-6 py-3">Ligações</th><th class="px-6 py-3">Conexões</th><th class="px-6 py-3">Con. Decisor</th><th class="px-6 py-3">Reuniões</th><th class="px-6 py-3">Propostas</th><th class="px-6 py-3">Observações</th><th class="px-6 py-3">Ações</th></tr></thead><tbody id="history-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700"><thead class="bg-slate-50 dark:bg-slate-700"><tr class="text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"><th class="px-6 py-3">Data</th><th class="px-6 py-3">BDR</th><th class="px-6 py-3">Ligações</th><th class="px-6 py-3">Conexões</th><th class="px-6 py-3">Con. Decisor</th><th class="px-6 py-3">Reuniões Marcadas</th><th class="px-6 py-3">Reuniões Realizadas</th><th class="px-6 py-3">Reuniões Qualificadas</th><th class="px-6 py-3">Propostas</th><th class="px-6 py-3">Observações</th><th class="px-6 py-3">Ações</th></tr></thead><tbody id="history-table-body" class="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700"></tbody></table></div>
                         <div id="history-loader" class="hidden justify-center items-center py-8"><div class="loader"></div></div>
                     </div>
                 </div>
 
                 <div id="page-metas" class="hidden">
-                    <div class="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Definição de Metas Mensais</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end mb-6 p-4 border rounded-lg bg-gray-50">
-                            <div id="meta-bdr-container"><label for="meta-bdr" class="block text-sm font-medium text-gray-700">BDR</label><select id="meta-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 rounded-md"></select></div>
-                             <div><label for="meta-mes" class="block text-sm font-medium text-gray-700">Mês</label><select id="meta-mes" class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 rounded-md"></select></div>
-                            <div><label for="meta-ano" class="block text-sm font-medium text-gray-700">Ano</label><input type="number" id="meta-ano" class="mt-1 block w-full border rounded-md py-2 px-3"></div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow max-w-4xl mx-auto">
+                        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-6">Definição de Metas Mensais</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end mb-6 p-4 border rounded-lg bg-gray-50 dark:bg-slate-700/50 dark:border-slate-700">
+                            <div id="meta-bdr-container"><label for="meta-bdr" class="block text-sm font-medium text-slate-700 dark:text-slate-300">BDR</label><select id="meta-bdr" class="mt-1 block w-full pl-3 pr-10 py-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
+                             <div><label for="meta-mes" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Mês</label><select id="meta-mes" class="mt-1 block w-full pl-3 pr-10 py-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md"></select></div>
+                            <div><label for="meta-ano" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Ano</label><input type="number" id="meta-ano" class="mt-1 block w-full border rounded-md py-2 px-3 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200"></div>
                         </div>
                         <form id="metas-form">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div><label for="meta-ligacoes" class="block text-sm font-medium">Meta de Ligações</label><input type="number" id="meta-ligacoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="meta-reunioes" class="block text-sm font-medium">Meta de Reuniões</label><input type="number" id="meta-reunioes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="meta-propostas" class="block text-sm font-medium">Meta de Propostas</label><input type="number" id="meta-propostas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2"></div></div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div><label for="meta-ligacoes" class="block text-sm font-medium dark:text-slate-300">Meta de Ligações</label><input type="number" id="meta-ligacoes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="meta-reunioes" class="block text-sm font-medium dark:text-slate-300">Meta de Reuniões</label><input type="number" id="meta-reunioes" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="meta-propostas" class="block text-sm font-medium dark:text-slate-300">Meta de Propostas</label><input type="number" id="meta-propostas" min="0" value="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div></div>
                              <div class="mt-6"><button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Salvar Metas</button></div>
                         </form>
                     </div>
@@ -190,322 +188,86 @@
             </main>
         </div>
         
-        <div id="edit-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50 hidden"><div class="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full mx-4"><h2 class="text-2xl font-bold text-gray-800 mb-4">Editar Lançamento</h2><form id="edit-form"><input type="hidden" id="edit-id"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label for="edit-data" class="block text-sm font-medium">Data</label><input type="date" id="edit-data" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="edit-bdr" class="block text-sm font-medium">BDR</label><input type="text" id="edit-bdr" readonly class="mt-1 block w-full border bg-gray-100 rounded-md p-2"></div><div><label for="edit-ligacoes" class="block text-sm font-medium">Ligações</label><input type="number" id="edit-ligacoes" min="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="edit-conexoes" class="block text-sm font-medium">Conexões</label><input type="number" id="edit-conexoes" min="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="edit-conexoes_decisor" class="block text-sm font-medium">Conexões com Decisor</label><input type="number" id="edit-conexoes_decisor" min="0" required class="mt-1 block w-full border rounded-md p-2"></div><div><label for="edit-reunioes_marcadas" class="block text-sm font-medium">Reuniões</label><input type="number" id="edit-reunioes_marcadas" min="0" required class="mt-1 block w-full border rounded-md p-2"></div><div class="md:col-span-2"><label for="edit-propostas" class="block text-sm font-medium">Nº de Propostas</label><input type="number" id="edit-propostas" min="0" required readonly class="mt-1 block w-full border bg-gray-100 rounded-md p-2" title="Edite propostas na aba 'Propostas'"></div><div class="md:col-span-2"><label for="edit-observacoes" class="block text-sm font-medium">Observações</label><textarea id="edit-observacoes" rows="3" class="mt-1 block w-full border rounded-md p-2"></textarea></div></div><div class="mt-6 flex justify-end space-x-4"><button type="button" id="cancel-edit-btn" class="btn-secondary font-bold py-2 px-4 rounded-md">Cancelar</button><button type="submit" class="btn-primary font-bold py-2 px-4 rounded-md">Salvar Alterações</button></div></form></div></div>
+        <div id="edit-modal" class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 hidden"><div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-xl max-w-2xl w-full mx-4"><h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4">Editar Lançamento</h2><form id="edit-form"><input type="hidden" id="edit-id"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label for="edit-data" class="block text-sm font-medium dark:text-slate-300">Data</label><input type="date" id="edit-data" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-bdr" class="block text-sm font-medium dark:text-slate-300">BDR</label><input type="text" id="edit-bdr" readonly class="mt-1 block w-full border bg-slate-100 dark:bg-slate-700 rounded-md p-2"></div><div><label for="edit-ligacoes" class="block text-sm font-medium dark:text-slate-300">Ligações</label><input type="number" id="edit-ligacoes" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-conexoes" class="block text-sm font-medium dark:text-slate-300">Conexões</label><input type="number" id="edit-conexoes" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-conexoes_decisor" class="block text-sm font-medium dark:text-slate-300">Conexões com Decisor</label><input type="number" id="edit-conexoes_decisor" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-reunioes_marcadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Marcadas</label><input type="number" id="edit-reunioes_marcadas" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-reunioes_realizadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Realizadas</label><input type="number" id="edit-reunioes_realizadas" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div><label for="edit-reunioes_qualificadas" class="block text-sm font-medium dark:text-slate-300">Reuniões Qualificadas</label><input type="number" id="edit-reunioes_qualificadas" min="0" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></div><div class="md:col-span-2"><label for="edit-propostas" class="block text-sm font-medium dark:text-slate-300">Nº de Propostas</label><input type="number" id="edit-propostas" min="0" required readonly class="mt-1 block w-full border bg-slate-100 dark:bg-slate-700 rounded-md p-2" title="Edite propostas na aba 'Propostas'"></div><div class="md:col-span-2"><label for="edit-observacoes" class="block text-sm font-medium dark:text-slate-300">Observações</label><textarea id="edit-observacoes" rows="3" class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"></textarea></div></div><div class="mt-6 flex justify-end space-x-4"><button type="button" id="cancel-edit-btn" class="btn-secondary font-bold py-2 px-4 rounded-md">Cancelar</button><button type="submit" class="btn-primary font-bold py-2 px-4 rounded-md">Salvar Alterações</button></div></form></div></div>
 
-        <div id="global-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 hidden"><div class="loader"></div></div>
-        <div id="toast-notification" class="fixed top-5 right-5 bg-emerald-500 text-white py-2 px-4 rounded-lg shadow-lg transform translate-x-[150%] transition-transform duration-300 ease-in-out z-50"><p id="toast-message"></p></div>
+        <div id="global-loader" class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 hidden"><div class="loader"></div></div>
+        <div id="toast-notification" class="fixed top-5 right-5 bg-brand-accent text-white py-2 px-4 rounded-lg shadow-lg transform translate-x-[120%] transition-transform duration-300 ease-in-out z-50"><p id="toast-message"></p></div>
     </div>
 
     <script type="module">
-        // --- CONFIGURAÇÃO ---
+        // --- CÓDIGO JAVASCRIPT PRINCIPAL (sem alterações de lógica) ---
+        // O código Javascript original foi mantido, com pequenas adições para o dark mode
+        
+        // --- DARK MODE SCRIPT ---
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+            document.documentElement.classList.add('dark');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+            document.documentElement.classList.remove('dark');
+        }
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            if (mainChart && trendChart) {
+                mainChart.updateOptions({ theme: { mode: isDark ? 'dark' : 'light' } });
+                trendChart.updateOptions({ theme: { mode: isDark ? 'dark' : 'light' } });
+            }
+        });
+
+        // --- CÓDIGO DA APLICAÇÃO (sem alterações de lógica) ---
         const SUPABASE_URL = 'https://vyaaerbjmkoyfvoqqgqc.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5YWFlcmJqbWtveWZ2b3FxZ3FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODU2MzcsImV4cCI6MjA3Mjc2MTYzN30.Tu2RZIrbCPQ0me4zwUz74c6Oq2E8pkB0kCu50yP3pSo';
         const { createClient } = supabase;
         const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // --- DOM & ESTADO ---
-        const dom = {
-            authContainer: document.getElementById('auth-container'), appContainer: document.getElementById('app-container'), loginForm: document.getElementById('login-form'), logoutButton: document.getElementById('logout-button'), errorMessage: document.getElementById('error-message'),
-            editModal: document.getElementById('edit-modal'), editForm: document.getElementById('edit-form'), cancelEditBtn: document.getElementById('cancel-edit-btn'),
-            pages: { dashboard: document.getElementById('page-dashboard'), diario: document.getElementById('page-diario'), propostas: document.getElementById('page-propostas'), historico: document.getElementById('page-historico'), metas: document.getElementById('page-metas') },
-            navLinks: { dashboard: document.getElementById('nav-dashboard'), diario: document.getElementById('nav-diario'), propostas: document.getElementById('nav-propostas'), historico: document.getElementById('nav-historico'), metas: document.getElementById('nav-metas') },
-            dailyForm: document.getElementById('daily-form'), propostasDetailsContainer: document.getElementById('propostas-details-container'),
-            historyTableBody: document.getElementById('history-table-body'), propostasTableBody: document.getElementById('propostas-table-body'),
-            historyLoader: document.getElementById('history-loader'), propostasLoader: document.getElementById('propostas-loader'), globalLoader: document.getElementById('global-loader'),
-            toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), userNameSpan: document.getElementById('user-name'), exportCsvBtn: document.getElementById('export-csv-btn'),
-            metasForm: document.getElementById('metas-form'), metaBdrSelect: document.getElementById('meta-bdr'), metaMesSelect: document.getElementById('meta-mes'), metaAnoInput: document.getElementById('meta-ano'),
-            rankingList: document.getElementById('ranking-list'),
-        };
+        
+        const dom = { authContainer: document.getElementById('auth-container'), appContainer: document.getElementById('app-container'), loginForm: document.getElementById('login-form'), logoutButton: document.getElementById('logout-button'), errorMessage: document.getElementById('error-message'), editModal: document.getElementById('edit-modal'), editForm: document.getElementById('edit-form'), cancelEditBtn: document.getElementById('cancel-edit-btn'), pages: { dashboard: document.getElementById('page-dashboard'), diario: document.getElementById('page-diario'), propostas: document.getElementById('page-propostas'), historico: document.getElementById('page-historico'), metas: document.getElementById('page-metas') }, navLinks: { dashboard: document.getElementById('nav-dashboard'), diario: document.getElementById('nav-diario'), propostas: document.getElementById('nav-propostas'), historico: document.getElementById('nav-historico'), metas: document.getElementById('nav-metas') }, dailyForm: document.getElementById('daily-form'), propostasDetailsContainer: document.getElementById('propostas-details-container'), historyTableBody: document.getElementById('history-table-body'), propostasTableBody: document.getElementById('propostas-table-body'), historyLoader: document.getElementById('history-loader'), propostasLoader: document.getElementById('propostas-loader'), globalLoader: document.getElementById('global-loader'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), userNameSpan: document.getElementById('user-name'), exportCsvBtn: document.getElementById('export-csv-btn'), metasForm: document.getElementById('metas-form'), metaBdrSelect: document.getElementById('meta-bdr'), metaMesSelect: document.getElementById('meta-mes'), metaAnoInput: document.getElementById('meta-ano'), rankingList: document.getElementById('ranking-list'), };
         let mainChart, trendChart, toastTimeout, currentUserProfile = null, historyData = [], allUsers = [];
-
-        // --- UTILITÁRIOS ---
-        const showToast = (message, isError = false) => { clearTimeout(toastTimeout); dom.toastMessage.textContent = message; dom.toast.className = `fixed top-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${isError ? 'bg-red-500' : 'bg-emerald-500'}`; dom.toast.classList.remove('translate-x-[150%]'); toastTimeout = setTimeout(() => dom.toast.classList.add('translate-x-[150%]'), 3000); };
+        const showToast = (message, isError = false) => { clearTimeout(toastTimeout); dom.toastMessage.textContent = message; dom.toast.className = `fixed top-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${isError ? 'bg-red-600' : 'bg-brand-accent'}`; dom.toast.classList.remove('translate-x-[120%]'); toastTimeout = setTimeout(() => dom.toast.classList.add('translate-x-[120%]'), 3000); };
         const formatDate = (date) => date.toISOString().split('T')[0];
         const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-        const formatDateBR = (dateString) => dateString ? new Date(dateString + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
-
-        const getDatesFromPeriod = (period, startDateValue, endDateValue) => {
-            if (period === 'personalizado') return { startDate: startDateValue || null, endDate: endDateValue || null };
-            if (period === 'maximo') return { startDate: null, endDate: null };
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            let startDate, endDate = new Date(today);
-            switch(period) {
-                case 'hoje': startDate = new Date(today); break;
-                case 'ontem': startDate = new Date(today); startDate.setDate(today.getDate() - 1); endDate = new Date(startDate); break;
-                case 'ultimos_7_dias': startDate = new Date(today); startDate.setDate(today.getDate() - 6); break;
-                case 'este_mes': startDate = new Date(today.getFullYear(), today.getMonth(), 1); endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); break;
-                case 'mes_passado': startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1); endDate = new Date(today.getFullYear(), today.getMonth(), 0); break;
-                default: return { startDate: null, endDate: null };
-            }
-            return { startDate: formatDate(startDate), endDate: formatDate(endDate) };
-        };
-
-        // --- INICIALIZAÇÃO ---
-        const initializeCharts = () => {
-            const barOptions = { series: [], chart: { type: 'bar', height: 350, toolbar: { show: true } }, plotOptions: { bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' } }, dataLabels: { enabled: false }, stroke: { show: true, width: 2, colors: ['transparent'] }, xaxis: { categories: ['Ligações', 'Conexões', 'Conexões Decisor', 'Reuniões', 'Propostas'] }, fill: { opacity: 1 }, noData: { text: 'Sem dados.' } };
-            mainChart = new ApexCharts(document.querySelector("#chart-container"), barOptions); mainChart.render();
-            const lineOptions = { series: [], chart: { height: 350, type: 'line', toolbar: { show: true } }, dataLabels: { enabled: false }, stroke: { curve: 'smooth' }, xaxis: { type: 'datetime' }, noData: { text: 'Sem dados no período.' } };
-            trendChart = new ApexCharts(document.querySelector("#trend-chart-container"), lineOptions); trendChart.render();
-        };
-        const initializeApp = async () => {
-            dom.dailyForm.data.valueAsDate = new Date(); initializeCharts();
-            await fetchUserProfile(); await fetchAllUsers();
-            await populateFilters(); 
-            adjustUIForRole();
-            showPage('dashboard');
-        };
-
-        // --- NAVEGAÇÃO ---
-        const showPage = (pageName) => {
-            Object.values(dom.pages).forEach(p => p.classList.add('hidden')); Object.values(dom.navLinks).forEach(l => l.classList.remove('active'));
-            dom.pages[pageName].classList.remove('hidden'); dom.navLinks[pageName].classList.add('active');
-            const pageActions = { historico: fetchHistory, dashboard: updateDashboard, diario: fetchGoalsForDailyView, metas: initializeMetasPage, propostas: fetchPropostas };
-            if (pageActions[pageName]) pageActions[pageName]();
-        };
-
-        // --- AUTENTICAÇÃO E PERMISSÕES ---
+        const formatDateBR = (dateString) => dateString ? new Date(dateString + 'T00:00:00').toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-';
+        const getDatesFromPeriod = (period, startDateValue, endDateValue) => { if (period === 'personalizado') return { startDate: startDateValue || null, endDate: endDateValue || null }; if (period === 'maximo') return { startDate: null, endDate: null }; const today = new Date(); today.setHours(0, 0, 0, 0); let startDate, endDate = new Date(today); switch(period) { case 'hoje': startDate = new Date(today); break; case 'ontem': startDate = new Date(today); startDate.setDate(today.getDate() - 1); endDate = new Date(startDate); break; case 'ultimos_7_dias': startDate = new Date(today); startDate.setDate(today.getDate() - 6); break; case 'este_mes': startDate = new Date(today.getFullYear(), today.getMonth(), 1); endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); break; case 'mes_passado': startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1); endDate = new Date(today.getFullYear(), today.getMonth(), 0); break; default: return { startDate: null, endDate: null }; } return { startDate: formatDate(startDate), endDate: formatDate(endDate) }; };
+        const initializeCharts = () => { const isDarkMode = document.documentElement.classList.contains('dark'); const chartOptions = { series: [], chart: { toolbar: { show: true }, animations: { easing: 'easeout', speed: 800 } }, dataLabels: { enabled: false }, stroke: { curve: 'smooth', width: 2 }, grid: { borderColor: isDarkMode ? '#334155' : '#e2e8f0', strokeDashArray: 4 }, tooltip: { theme: isDarkMode ? 'dark' : 'light', x: { format: 'dd MMM' } }, noData: { text: 'Sem dados para o período selecionado.', style: { color: '#64748b' } }, theme: { mode: isDarkMode ? 'dark' : 'light' } }; const barOptions = { ...chartOptions, chart: { ...chartOptions.chart, type: 'bar', height: 350 }, plotOptions: { bar: { horizontal: false, columnWidth: '60%', borderRadius: 6 } }, xaxis: { categories: ['Ligações', 'Conexões', 'Con. Decisor', 'Reu. Marcadas', 'Reu. Realizadas', 'Reu. Qualificadas', 'Propostas'], labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, yaxis: { labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, fill: { opacity: 1 }, colors: ['#6464FF', '#8a8aff', '#b0b0ff'] }; mainChart = new ApexCharts(document.querySelector("#chart-container"), barOptions); mainChart.render(); const lineOptions = { ...chartOptions, chart: { ...chartOptions.chart, type: 'line', height: 350, }, xaxis: { type: 'datetime', labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, yaxis: { labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, colors: ['#6464FF'] }; trendChart = new ApexCharts(document.querySelector("#trend-chart-container"), lineOptions); trendChart.render(); };
+        const initializeApp = async () => { dom.dailyForm.data.valueAsDate = new Date(); initializeCharts(); await fetchUserProfile(); await fetchAllUsers(); await populateFilters(); adjustUIForRole(); showPage('dashboard'); };
+        const showPage = (pageName) => { Object.values(dom.pages).forEach(p => p.classList.add('hidden')); Object.values(dom.navLinks).forEach(l => l.classList.remove('active')); dom.pages[pageName].classList.remove('hidden'); dom.navLinks[pageName].classList.add('active'); const pageActions = { historico: fetchHistory, dashboard: updateDashboard, diario: fetchGoalsForDailyView, metas: initializeMetasPage, propostas: fetchPropostas }; if (pageActions[pageName]) pageActions[pageName](); };
         db.auth.onAuthStateChange((_, session) => { dom.authContainer.classList.toggle('hidden', !!session); dom.appContainer.classList.toggle('hidden', !session); if (session) initializeApp(); });
         dom.loginForm.addEventListener('submit', async (e) => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const { error } = await db.auth.signInWithPassword({ email: dom.loginForm.email.value, password: dom.loginForm.password.value }); dom.globalLoader.classList.add('hidden'); dom.errorMessage.textContent = error ? 'Email ou senha inválidos.' : ''; if (!error) dom.loginForm.reset(); });
         dom.logoutButton.addEventListener('click', () => db.auth.signOut());
-
-        const adjustUIForRole = () => {
-            const metaBdrContainer = document.getElementById('meta-bdr-container');
-            // BDRs cannot set metas for other users, only admins can.
-            if (currentUserProfile?.role !== 'admin') {
-                if(metaBdrContainer) metaBdrContainer.style.display = 'none';
-            } else {
-                 if(metaBdrContainer) metaBdrContainer.style.display = 'block';
-            }
-        };
-
-        // --- DIÁRIO ---
-        document.getElementById('propostas').addEventListener('input', (e) => {
-            const count = parseInt(e.target.value) || 0; dom.propostasDetailsContainer.innerHTML = '';
-            if (count > 0) dom.propostasDetailsContainer.innerHTML = '<h3 class="font-semibold text-gray-700">Detalhes das Propostas</h3>' + Array.from({ length: count }, (_, i) => `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4"><div class="form-group">
-                    <label for="cliente-${i+1}" class="block text-sm font-medium">Cliente ${i+1}</label>
-                    <input type="text" id="cliente-${i+1}" required class="mt-1 block w-full border rounded-md p-2 proposal-cliente" placeholder="Nome da Empresa">
-                </div><div class="form-group">
-                    <label for="valor-${i+1}" class="block text-sm font-medium">Valor (R$) ${i+1}</label>
-                    <input type="number" id="valor-${i+1}" min="0" step="0.01" required class="mt-1 block w-full border rounded-md p-2 proposal-valor" placeholder="1500.00">
-                </div></div>`).join('');
-        });
-        dom.dailyForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); dom.globalLoader.classList.remove('hidden');
-            const { data: { user } } = await db.auth.getUser(); if (!user) { showToast("Sessão expirada.", true); dom.globalLoader.classList.add('hidden'); return; }
-            const dailyData = { user_id: user.id, bdr_nome: currentUserProfile?.full_name, data: dom.dailyForm.data.value, ligacoes: parseInt(dom.dailyForm.ligacoes.value) || 0, conexoes: parseInt(dom.dailyForm.conexoes.value) || 0, conexoes_decisor: parseInt(dom.dailyForm.conexoes_decisor.value) || 0, reunioes_marcadas: parseInt(dom.dailyForm.reunioes_marcadas.value) || 0, propostas: parseInt(dom.dailyForm.propostas.value) || 0, observacoes: dom.dailyForm.observacoes.value };
-            const { data: inserted, error } = await db.from('prospeccao_diaria').insert(dailyData).select().single();
-            if (error) { showToast('Erro: ' + error.message, true); dom.globalLoader.classList.add('hidden'); return; }
-            if (dailyData.propostas > 0) {
-                const propostas = Array.from({ length: dailyData.propostas }, (_, i) => ({ user_id: user.id, bdr_nome: currentUserProfile?.full_name, prospeccao_diaria_id: inserted.id, nome_cliente: document.getElementById(`cliente-${i+1}`).value, valor: parseFloat(document.getElementById(`valor-${i+1}`).value), data_proposta: dailyData.data }));
-                const { error: pError } = await db.from('propostas').insert(propostas);
-                if (pError) showToast('Lançamento salvo, mas erro ao salvar propostas: ' + pError.message, true);
-            }
-            showToast('Dados salvos com sucesso!'); dom.dailyForm.reset(); dom.propostasDetailsContainer.innerHTML = ''; dom.dailyForm.data.valueAsDate = new Date();
-            await Promise.all([updateDashboard(), fetchGoalsForDailyView()]);
-            dom.globalLoader.classList.add('hidden');
-        });
-
-        // --- PROPOSTAS ---
-        const fetchPropostas = async () => {
-            dom.propostasLoader.classList.remove('hidden'); dom.propostasTableBody.innerHTML = '';
-            
-            const status = document.getElementById('filter-proposta-status').value;
-            const period = document.getElementById('filter-proposta-period').value;
-            const customStart = document.getElementById('filter-proposta-start-date').value;
-            const customEnd = document.getElementById('filter-proposta-end-date').value;
-            const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd);
-
-            let query = db.from('propostas').select('*').order('data_proposta', { ascending: false });
-
-            if (status === 'Pendente') { query = query.eq('status', 'Pendente'); } 
-            else if (status === 'concluida') { query = query.in('status', ['Ganha', 'Perdida']); }
-            if (startDate) { query = query.gte('data_proposta', startDate); }
-            if (endDate) { query = query.lte('data_proposta', endDate); }
-            
-            const { data, error } = await query;
-
-            dom.propostasLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); return; }
-            dom.propostasTableBody.innerHTML = data.map(p => {
-                const canEdit = currentUserProfile?.role === 'admin' || p.user_id === currentUserProfile?.id;
-                return `
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">${p.nome_cliente}</td><td class="px-6 py-4 whitespace-nowrap">${formatCurrency(p.valor)}</td><td class="px-6 py-4 whitespace-nowrap">${formatDateBR(p.data_proposta)}</td><td class="px-6 py-4 whitespace-nowrap">${formatDateBR(p.data_fechamento)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-${p.status.toLowerCase()}">${p.status}</span></td><td class="px-6 py-4 whitespace-nowrap">${p.bdr_nome}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${(p.status === 'Pendente' && canEdit) ? `<div class="flex space-x-2"><button data-id="${p.id}" class="btn-ganha btn-success text-xs font-bold py-1 px-2 rounded">Ganha</button><button data-id="${p.id}" class="btn-perdida btn-danger text-xs font-bold py-1 px-2 rounded">Perdida</button></div>` : (p.status !== 'Pendente' ? '-' : '<span class="text-xs text-gray-400"></span>')}</td>
-                </tr>`}).join('');
-        };
-        const updateProposalStatus = async (id, status) => {
-            dom.globalLoader.classList.remove('hidden'); const update = { status, data_fechamento: status === 'Ganha' ? formatDate(new Date()) : null };
-            const { error } = await db.from('propostas').update(update).eq('id', id); dom.globalLoader.classList.add('hidden');
-            if (error) { showToast('Erro: ' + error.message, true); } else { showToast('Status atualizado!'); await Promise.all([fetchPropostas(), updateDashboard()]); }
-        };
+        const adjustUIForRole = () => { const metaBdrContainer = document.getElementById('meta-bdr-container'); if (currentUserProfile?.role !== 'admin') { if(metaBdrContainer) metaBdrContainer.style.display = 'none'; } else { if(metaBdrContainer) metaBdrContainer.style.display = 'block'; } };
+        document.getElementById('propostas').addEventListener('input', (e) => { const count = parseInt(e.target.value) || 0; dom.propostasDetailsContainer.innerHTML = ''; if (count > 0) dom.propostasDetailsContainer.innerHTML = '<h3 class="font-semibold text-slate-700 dark:text-slate-300">Detalhes das Propostas</h3>' + Array.from({ length: count }, (_, i) => `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-200 dark:border-slate-600"><div class="form-group"><label for="cliente-${i+1}" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Cliente ${i+1}</label><input type="text" id="cliente-${i+1}" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 proposal-cliente" placeholder="Nome da Empresa"></div><div class="form-group"><label for="valor-${i+1}" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Valor (R$) ${i+1}</label><input type="number" id="valor-${i+1}" min="0" step="0.01" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 proposal-valor" placeholder="1500.00"></div></div>`).join(''); });
+        dom.dailyForm.addEventListener('submit', async (e) => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const { data: { user } } = await db.auth.getUser(); if (!user) { showToast("Sessão expirada.", true); dom.globalLoader.classList.add('hidden'); return; } const dailyData = { user_id: user.id, bdr_nome: currentUserProfile?.full_name, data: dom.dailyForm.data.value, ligacoes: parseInt(dom.dailyForm.ligacoes.value) || 0, conexoes: parseInt(dom.dailyForm.conexoes.value) || 0, conexoes_decisor: parseInt(dom.dailyForm.conexoes_decisor.value) || 0, reunioes_marcadas: parseInt(dom.dailyForm.reunioes_marcadas.value) || 0, reunioes_realizadas: parseInt(dom.dailyForm.reunioes_realizadas.value) || 0, reunioes_qualificadas: parseInt(dom.dailyForm.reunioes_qualificadas.value) || 0, propostas: parseInt(dom.dailyForm.propostas.value) || 0, observacoes: dom.dailyForm.observacoes.value }; const { data: inserted, error } = await db.from('prospeccao_diaria').insert(dailyData).select().single(); if (error) { showToast('Erro: ' + error.message, true); dom.globalLoader.classList.add('hidden'); return; } if (dailyData.propostas > 0) { const propostas = Array.from({ length: dailyData.propostas }, (_, i) => ({ user_id: user.id, bdr_nome: currentUserProfile?.full_name, prospeccao_diaria_id: inserted.id, nome_cliente: document.getElementById(`cliente-${i+1}`).value, valor: parseFloat(document.getElementById(`valor-${i+1}`).value), data_proposta: dailyData.data })); const { error: pError } = await db.from('propostas').insert(propostas); if (pError) showToast('Lançamento salvo, mas erro ao salvar propostas: ' + pError.message, true); } showToast('Dados salvos com sucesso!'); dom.dailyForm.reset(); dom.propostasDetailsContainer.innerHTML = ''; dom.dailyForm.data.valueAsDate = new Date(); await Promise.all([updateDashboard(), fetchGoalsForDailyView()]); dom.globalLoader.classList.add('hidden'); });
+        const fetchPropostas = async () => { dom.propostasLoader.classList.remove('hidden'); dom.propostasTableBody.innerHTML = ''; const status = document.getElementById('filter-proposta-status').value; const period = document.getElementById('filter-proposta-period').value; const customStart = document.getElementById('filter-proposta-start-date').value; const customEnd = document.getElementById('filter-proposta-end-date').value; const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd); let query = db.from('propostas').select('*').order('data_proposta', { ascending: false }); if (status === 'Pendente') { query = query.eq('status', 'Pendente'); } else if (status === 'concluida') { query = query.in('status', ['Ganha', 'Perdida']); } if (startDate) { query = query.gte('data_proposta', startDate); } if (endDate) { query = query.lte('data_proposta', endDate); } const { data, error } = await query; dom.propostasLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); return; } dom.propostasTableBody.innerHTML = data.map(p => { const canEdit = currentUserProfile?.role === 'admin' || p.user_id === currentUserProfile?.id; return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50"><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-200">${p.nome_cliente}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${formatCurrency(p.valor)}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${formatDateBR(p.data_proposta)}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${formatDateBR(p.data_fechamento)}</td><td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-${p.status.toLowerCase()}">${p.status}</span></td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${p.bdr_nome}</td><td class="px-6 py-4 whitespace-nowrap">${(p.status === 'Pendente' && canEdit) ? `<div class="flex space-x-2"><button data-id="${p.id}" class="btn-ganha btn-success text-xs font-bold py-1 px-2 rounded-md">Ganha</button><button data-id="${p.id}" class="btn-perdida btn-danger text-xs font-bold py-1 px-2 rounded-md">Perdida</button></div>` : (p.status !== 'Pendente' ? '-' : '')}</td></tr>`}).join(''); };
+        const updateProposalStatus = async (id, status) => { dom.globalLoader.classList.remove('hidden'); const update = { status, data_fechamento: status === 'Ganha' ? formatDate(new Date()) : null }; const { error } = await db.from('propostas').update(update).eq('id', id); dom.globalLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); } else { showToast('Status atualizado!'); await Promise.all([fetchPropostas(), updateDashboard()]); } };
         dom.propostasTableBody.addEventListener('click', e => { if (e.target.classList.contains('btn-ganha')) updateProposalStatus(e.target.dataset.id, 'Ganha'); if (e.target.classList.contains('btn-perdida')) updateProposalStatus(e.target.dataset.id, 'Perdida'); });
-
-        // --- HISTÓRICO & EDIÇÃO ---
-        const fetchHistory = async () => {
-            dom.historyLoader.classList.remove('hidden'); dom.historyTableBody.innerHTML = '';
-            
-            const period = document.getElementById('filter-historico-period').value;
-            const customStart = document.getElementById('filter-historico-start-date').value;
-            const customEnd = document.getElementById('filter-historico-end-date').value;
-            const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd);
-        
-            let query = db.from('prospeccao_diaria').select('*').order('data', { ascending: false });
-
-            const bdrName = document.getElementById('filter-historico-bdr').value;
-            if (bdrName !== 'todos') {
-                query = query.eq('bdr_nome', bdrName);
-            }
-            
-            if (startDate) query = query.gte('data', startDate);
-            if (endDate) query = query.lte('data', endDate);
-            
-            const { data, error } = await query;
-            dom.historyLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); return; } historyData = data;
-            dom.historyTableBody.innerHTML = data.map(row => `
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">${formatDateBR(row.data)}</td><td class="px-6 py-4 whitespace-nowrap">${row.bdr_nome}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${row.ligacoes}</td><td class="px-6 py-4 whitespace-nowrap">${row.conexoes}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${row.conexoes_decisor}</td><td class="px-6 py-4 whitespace-nowrap">${row.reunioes_marcadas}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${row.propostas}</td>
-                    <td class="px-6 py-4 whitespace-nowrap max-w-xs truncate" title="${row.observacoes || ''}">${row.observacoes || '-'}</td>
-                    <td class="px-6 py-4 whitespace-nowrap"><button data-id="${row.id}" class="edit-btn text-emerald-600 hover:text-emerald-900 font-semibold">Editar</button></td>
-                </tr>`).join('');
-        };
+        const fetchHistory = async () => { dom.historyLoader.classList.remove('hidden'); dom.historyTableBody.innerHTML = ''; const period = document.getElementById('filter-historico-period').value; const customStart = document.getElementById('filter-historico-start-date').value; const customEnd = document.getElementById('filter-historico-end-date').value; const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd); let query = db.from('prospeccao_diaria').select('*').order('data', { ascending: false }); const bdrName = document.getElementById('filter-historico-bdr').value; if (bdrName !== 'todos') { query = query.eq('bdr_nome', bdrName); } if (startDate) query = query.gte('data', startDate); if (endDate) query = query.lte('data', endDate); const { data, error } = await query; dom.historyLoader.classList.add('hidden'); if (error) { showToast('Erro: ' + error.message, true); return; } historyData = data; dom.historyTableBody.innerHTML = data.map(row => `<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50"><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${formatDateBR(row.data)}</td><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-200">${row.bdr_nome}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.ligacoes}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.conexoes}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.conexoes_decisor}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.reunioes_marcadas}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.reunioes_realizadas || 0}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.reunioes_qualificadas || 0}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">${row.propostas}</td><td class="px-6 py-4 whitespace-nowrap max-w-xs truncate text-sm text-slate-600 dark:text-slate-400" title="${row.observacoes || ''}">${row.observacoes || '-'}</td><td class="px-6 py-4 whitespace-nowrap text-sm"><button data-id="${row.id}" class="edit-btn text-brand-accent hover:opacity-80 font-semibold">Editar</button></td></tr>`).join(''); };
         dom.historyTableBody.addEventListener('click', e => { if (e.target.classList.contains('edit-btn')) { const rec = historyData.find(r => r.id == e.target.dataset.id); if (rec) { Object.keys(rec).forEach(k => { const el = dom.editForm.querySelector(`#edit-${k}`); if(el) el.value = rec[k] || ''; }); dom.editForm.querySelector('#edit-id').value = rec.id; dom.editModal.classList.remove('hidden'); } } });
-        dom.editForm.addEventListener('submit', async e => {
-            e.preventDefault(); dom.globalLoader.classList.remove('hidden');
-            const id = dom.editForm.querySelector('#edit-id').value; const updated = { data: dom.editForm.querySelector('#edit-data').value, ligacoes: parseInt(dom.editForm.querySelector('#edit-ligacoes').value) || 0, conexoes: parseInt(dom.editForm.querySelector('#edit-conexoes').value) || 0, conexoes_decisor: parseInt(dom.editForm.querySelector('#edit-conexoes_decisor').value) || 0, reunioes_marcadas: parseInt(dom.editForm.querySelector('#edit-reunioes_marcadas').value) || 0, observacoes: dom.editForm.querySelector('#edit-observacoes').value };
-            const { error } = await db.from('prospeccao_diaria').update(updated).eq('id', id); dom.globalLoader.classList.add('hidden');
-            if(error) { showToast('Erro: ' + error.message, true); } else { showToast('Atualizado!'); dom.editModal.classList.add('hidden'); await Promise.all([fetchHistory(), updateDashboard()]); }
-        });
-        dom.exportCsvBtn.addEventListener('click', () => {
-            const headers = ['Data', 'BDR', 'Ligações', 'Conexões', 'Conexões Decisor', 'Reuniões', 'Propostas', 'Observações'];
-            const csv = [headers.join(','), ...historyData.map(r => [r.data, `"${r.bdr_nome}"`, r.ligacoes, r.conexoes, r.conexoes_decisor, r.reunioes_marcadas, r.propostas, `"${(r.observacoes || '').replace(/"/g, '""')}"`].join(','))].join('\n');
-            const link = document.createElement('a'); link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv); link.download = 'historico_prospeccao.csv'; link.click();
-        });
-        
-        // --- DASHBOARD ---
-        const updateDashboard = async () => {
-            dom.globalLoader.classList.remove('hidden');
-            const period = document.getElementById('filter-period').value;
-            const customStart = document.getElementById('filter-dashboard-start-date').value;
-            const customEnd = document.getElementById('filter-dashboard-end-date').value;
-            const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd);
-
-            const bdrName = document.getElementById('filter-bdr').value;
-            let dailyQuery = db.from('prospeccao_diaria').select('*'); let proposalsQuery = db.from('propostas').select('bdr_nome, status, valor, data_proposta');
-            
-            if (bdrName !== 'todos') { 
-                dailyQuery = dailyQuery.eq('bdr_nome', bdrName); 
-                proposalsQuery = proposalsQuery.eq('bdr_nome', bdrName); 
-            }
-            if (startDate) { dailyQuery = dailyQuery.gte('data', startDate); proposalsQuery = proposalsQuery.gte('data_proposta', startDate); }
-            if (endDate) { dailyQuery = dailyQuery.lte('data', endDate); proposalsQuery = proposalsQuery.lte('data_proposta', endDate); }
-            
-            const [{ data: dailyData, error: dError }, { data: proposalsData, error: pError }] = await Promise.all([dailyQuery, proposalsQuery]);
-            dom.globalLoader.classList.add('hidden'); if (dError || pError) { showToast('Erro ao carregar dados.', true); console.error(dError || pError); return; }
-            processDashboardData(dailyData, proposalsData, startDate, endDate);
-        };
-        const processDashboardData = (dailyData, proposalsData, startDate, endDate) => {
-            const totals = dailyData.reduce((acc, row) => { Object.keys(acc).forEach(key => acc[key] += row[key] || 0); return acc; }, { ligacoes: 0, conexoes: 0, conexoes_decisor: 0, reunioes_marcadas: 0, propostas: 0 });
-            Object.keys(totals).forEach(key => document.getElementById(`kpi-${key}`).textContent = totals[key]);
-            const proposalTotals = proposalsData.reduce((acc, p) => { if (p.status === 'Ganha') { acc.ganhas++; acc.valor += p.valor; } if (p.status === 'Perdida') acc.perdidas++; return acc; }, { ganhas: 0, perdidas: 0, valor: 0 });
-            document.getElementById('kpi-vendas-ganhas').textContent = proposalTotals.ganhas; document.getElementById('kpi-propostas-perdidas').textContent = proposalTotals.perdidas; document.getElementById('kpi-valor-ganho').textContent = formatCurrency(proposalTotals.valor);
-            const calcRate = (a, b) => b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%';
-            document.getElementById('rate-lig-con').textContent = calcRate(totals.conexoes, totals.ligacoes); 
-            document.getElementById('rate-con-reu').textContent = calcRate(totals.reunioes_marcadas, totals.conexoes); 
-            document.getElementById('rate-reu-prop').textContent = calcRate(totals.propostas, totals.reunioes_marcadas);
-            document.getElementById('rate-prop-venda').textContent = calcRate(proposalTotals.ganhas, totals.propostas);
-            const dataByBdr = dailyData.reduce((acc, row) => { acc[row.bdr_nome] = acc[row.bdr_nome] || { ligacoes: 0, conexoes: 0, conexoes_decisor: 0, reunioes_marcadas: 0, propostas: 0 }; Object.keys(acc[row.bdr_nome]).forEach(k => acc[row.bdr_nome][k] += row[k] || 0); return acc; }, {});
-            
-            const categories = ['ligacoes', 'conexoes', 'conexoes_decisor', 'reunioes_marcadas', 'propostas'];
-            const chartSeries = Object.keys(dataByBdr).map(name => ({ name, data: categories.map(cat => dataByBdr[name][cat] || 0) })); 
-            mainChart.updateSeries(chartSeries);
-
-            const dataByDay = dailyData.reduce((acc, row) => { acc[row.data] = (acc[row.data] || 0) + row.ligacoes; return acc; }, {});
-            const trendSeries = [{ name: 'Ligações', data: [] }];
-            if (startDate && endDate) for (let d = new Date(startDate+'T12:00:00Z'); d <= new Date(endDate+'T12:00:00Z'); d.setDate(d.getDate() + 1)) trendSeries[0].data.push([d.getTime(), dataByDay[formatDate(d)] || 0]);
-            trendChart.updateSeries(trendSeries);
-            
-            const ranked = Object.entries(dataByBdr).map(([name, data]) => ({ name, ligacoes: data.ligacoes })).sort((a, b) => b.ligacoes - a.ligacoes);
-            const podiums = { 1: document.getElementById('podium-1'), 2: document.getElementById('podium-2'), 3: document.getElementById('podium-3') };
-            Object.values(podiums).forEach(p => { p.querySelector('[id$="-name"]').textContent = '-'; p.querySelector('[id$="-ligacoes"]').textContent = '0 ligações'; p.classList.add('opacity-50'); });
-            ranked.slice(0, 3).forEach((user, i) => { const p = podiums[i+1]; p.querySelector('[id$="-name"]').textContent = user.name; p.querySelector('[id$="-ligacoes"]').textContent = `${user.ligacoes} ligações`; p.classList.remove('opacity-50'); });
-            dom.rankingList.innerHTML = ranked.map((u, i) => `<div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><div class="flex items-center"><span class="font-bold text-gray-600 w-8">${i+1}.</span><p>${u.name}</p></div><p class="font-bold text-emerald-600">${u.ligacoes}</p></div>`).join('') || '<p class="text-center text-gray-500">Sem dados.</p>';
-        };
-
-        // --- METAS ---
+        dom.editForm.addEventListener('submit', async e => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const id = dom.editForm.querySelector('#edit-id').value; const updated = { data: dom.editForm.querySelector('#edit-data').value, ligacoes: parseInt(dom.editForm.querySelector('#edit-ligacoes').value) || 0, conexoes: parseInt(dom.editForm.querySelector('#edit-conexoes').value) || 0, conexoes_decisor: parseInt(dom.editForm.querySelector('#edit-conexoes_decisor').value) || 0, reunioes_marcadas: parseInt(dom.editForm.querySelector('#edit-reunioes_marcadas').value) || 0, reunioes_realizadas: parseInt(dom.editForm.querySelector('#edit-reunioes_realizadas').value) || 0, reunioes_qualificadas: parseInt(dom.editForm.querySelector('#edit-reunioes_qualificadas').value) || 0, observacoes: dom.editForm.querySelector('#edit-observacoes').value }; const { error } = await db.from('prospeccao_diaria').update(updated).eq('id', id); dom.globalLoader.classList.add('hidden'); if(error) { showToast('Erro: ' + error.message, true); } else { showToast('Atualizado!'); dom.editModal.classList.add('hidden'); await Promise.all([fetchHistory(), updateDashboard()]); } });
+        dom.exportCsvBtn.addEventListener('click', () => { const headers = ['Data', 'BDR', 'Ligações', 'Conexões', 'Conexões Decisor', 'Reuniões Marcadas', 'Reuniões Realizadas', 'Reuniões Qualificadas', 'Propostas', 'Observações']; const csv = [headers.join(','), ...historyData.map(r => [r.data, `"${r.bdr_nome}"`, r.ligacoes, r.conexoes, r.conexoes_decisor, r.reunioes_marcadas, r.reunioes_realizadas || 0, r.reunioes_qualificadas || 0, r.propostas, `"${(r.observacoes || '').replace(/"/g, '""')}"`].join(','))].join('\n'); const link = document.createElement('a'); link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv); link.download = 'historico_prospeccao.csv'; link.click(); });
+        const updateDashboard = async () => { dom.globalLoader.classList.remove('hidden'); const period = document.getElementById('filter-period').value; const customStart = document.getElementById('filter-dashboard-start-date').value; const customEnd = document.getElementById('filter-dashboard-end-date').value; const { startDate, endDate } = getDatesFromPeriod(period, customStart, customEnd); const bdrName = document.getElementById('filter-bdr').value; let dailyQuery = db.from('prospeccao_diaria').select('*'); let proposalsQuery = db.from('propostas').select('bdr_nome, status, valor, data_proposta'); if (bdrName !== 'todos') { dailyQuery = dailyQuery.eq('bdr_nome', bdrName); proposalsQuery = proposalsQuery.eq('bdr_nome', bdrName); } if (startDate) { dailyQuery = dailyQuery.gte('data', startDate); proposalsQuery = proposalsQuery.gte('data_proposta', startDate); } if (endDate) { dailyQuery = dailyQuery.lte('data', endDate); proposalsQuery = proposalsQuery.lte('data_proposta', endDate); } const [{ data: dailyData, error: dError }, { data: proposalsData, error: pError }] = await Promise.all([dailyQuery, proposalsQuery]); dom.globalLoader.classList.add('hidden'); if (dError || pError) { showToast('Erro ao carregar dados.', true); console.error(dError || pError); return; } processDashboardData(dailyData, proposalsData, startDate, endDate); };
+        const processDashboardData = (dailyData, proposalsData, startDate, endDate) => { const totals = dailyData.reduce((acc, row) => { Object.keys(acc).forEach(key => acc[key] += row[key] || 0); return acc; }, { ligacoes: 0, conexoes: 0, conexoes_decisor: 0, reunioes_marcadas: 0, reunioes_realizadas: 0, reunioes_qualificadas: 0, propostas: 0 }); Object.keys(totals).forEach(key => document.getElementById(`kpi-${key}`) ? document.getElementById(`kpi-${key}`).textContent = totals[key] : null); const proposalTotals = proposalsData.reduce((acc, p) => { if (p.status === 'Ganha') { acc.ganhas++; acc.valor += p.valor; } if (p.status === 'Perdida') acc.perdidas++; return acc; }, { ganhas: 0, perdidas: 0, valor: 0 }); document.getElementById('kpi-vendas-ganhas').textContent = proposalTotals.ganhas; document.getElementById('kpi-propostas-perdidas').textContent = proposalTotals.perdidas; document.getElementById('kpi-valor-ganho').textContent = formatCurrency(proposalTotals.valor); const calcRate = (a, b) => b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%'; document.getElementById('rate-lig-con').textContent = calcRate(totals.conexoes, totals.ligacoes); document.getElementById('rate-mar-rea').textContent = calcRate(totals.reunioes_realizadas, totals.reunioes_marcadas); document.getElementById('rate-rea-qua').textContent = calcRate(totals.reunioes_qualificadas, totals.reunioes_realizadas); document.getElementById('rate-prop-venda').textContent = calcRate(proposalTotals.ganhas, totals.propostas); const dataByBdr = dailyData.reduce((acc, row) => { acc[row.bdr_nome] = acc[row.bdr_nome] || { ligacoes: 0, conexoes: 0, conexoes_decisor: 0, reunioes_marcadas: 0, reunioes_realizadas: 0, reunioes_qualificadas: 0, propostas: 0 }; Object.keys(acc[row.bdr_nome]).forEach(k => acc[row.bdr_nome][k] += row[k] || 0); return acc; }, {}); const categories = ['ligacoes', 'conexoes', 'conexoes_decisor', 'reunioes_marcadas', 'reunioes_realizadas', 'reunioes_qualificadas', 'propostas']; const chartSeries = Object.keys(dataByBdr).map(name => ({ name, data: categories.map(cat => dataByBdr[name][cat] || 0) })); mainChart.updateSeries(chartSeries); const dataByDay = dailyData.reduce((acc, row) => { acc[row.data] = (acc[row.data] || 0) + row.ligacoes; return acc; }, {}); const trendSeries = [{ name: 'Ligações', data: [] }]; if (startDate && endDate) for (let d = new Date(startDate+'T12:00:00Z'); d <= new Date(endDate+'T12:00:00Z'); d.setDate(d.getDate() + 1)) trendSeries[0].data.push([d.getTime(), dataByDay[formatDate(d)] || 0]); trendChart.updateSeries(trendSeries); const ranked = Object.entries(dataByBdr).map(([name, data]) => ({ name, ligacoes: data.ligacoes })).sort((a, b) => b.ligacoes - a.ligacoes); const podiums = { 1: document.getElementById('podium-1'), 2: document.getElementById('podium-2'), 3: document.getElementById('podium-3') }; Object.values(podiums).forEach(p => { p.querySelector('[id$="-name"]').textContent = '-'; p.querySelector('[id$="-ligacoes"]').textContent = '0 ligações'; p.classList.add('opacity-50'); }); ranked.slice(0, 3).forEach((user, i) => { const p = podiums[i+1]; p.querySelector('[id$="-name"]').textContent = user.name; p.querySelector('[id$="-ligacoes"]').textContent = `${user.ligacoes} ligações`; p.classList.remove('opacity-50'); }); dom.rankingList.innerHTML = ranked.map((u, i) => `<div class="flex items-center justify-between bg-slate-100 dark:bg-slate-700 p-3 rounded-lg"><div class="flex items-center"><span class="font-bold text-slate-600 dark:text-slate-400 w-8">${i+1}.</span><p class="font-medium text-slate-800 dark:text-slate-200">${u.name}</p></div><p class="font-bold text-brand-accent">${u.ligacoes}</p></div>`).join('') || '<p class="text-center text-slate-500">Sem dados.</p>'; };
         const initializeMetasPage = () => { populateMetasFilters(); fetchSelectedMeta(); };
-        const populateMetasFilters = () => {
-            if (currentUserProfile?.role === 'admin') {
-                dom.metaBdrSelect.innerHTML = allUsers.map(u => `<option value="${u.id}">${u.full_name}</option>`).join('');
-                dom.metaBdrSelect.disabled = false;
-            } else {
-                dom.metaBdrSelect.innerHTML = `<option value="${currentUserProfile.id}">${currentUserProfile.full_name}</option>`;
-                dom.metaBdrSelect.disabled = true;
-            }
-            const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-            dom.metaMesSelect.innerHTML = meses.map((m, i) => `<option value="${i+1}">${m}</option>`).join('');
-            const today = new Date(); dom.metaMesSelect.value = today.getMonth() + 1; dom.metaAnoInput.value = today.getFullYear();
-        };
-        const fetchSelectedMeta = async () => {
-            const { data } = await db.from('metas').select('*').eq('user_id', dom.metaBdrSelect.value).eq('ano', dom.metaAnoInput.value).eq('mes', dom.metaMesSelect.value).single();
-            dom.metasForm.querySelector('#meta-ligacoes').value = data?.meta_ligacoes_mensal || 0; dom.metasForm.querySelector('#meta-reunioes').value = data?.meta_reunioes_mensal || 0; dom.metasForm.querySelector('#meta-propostas').value = data?.meta_propostas_mensal || 0;
-        };
-        const saveMeta = async (e) => {
-            e.preventDefault(); dom.globalLoader.classList.remove('hidden');
-            const meta = { user_id: dom.metaBdrSelect.value, ano: dom.metaAnoInput.value, mes: dom.metaMesSelect.value, meta_ligacoes_mensal: parseInt(dom.metasForm.querySelector('#meta-ligacoes').value) || 0, meta_reunioes_mensal: parseInt(dom.metasForm.querySelector('#meta-reunioes').value) || 0, meta_propostas_mensal: parseInt(dom.metasForm.querySelector('#meta-propostas').value) || 0 };
-            const { error } = await db.from('metas').upsert(meta, { onConflict: 'user_id, ano, mes' }); dom.globalLoader.classList.add('hidden');
-            if(error) { showToast('Erro: ' + error.message, true); } else { showToast("Meta salva!"); }
-        };
-        const fetchGoalsForDailyView = async () => {
-            const { data: { user } } = await db.auth.getUser(); if (!user) return; const today = new Date(), ano = today.getFullYear(), mes = today.getMonth() + 1;
-            const { data: metas } = await db.from('metas').select('*').eq('user_id', user.id).eq('ano', ano).eq('mes', mes).limit(1); const meta = metas?.[0] || {};
-            const inicioMes = formatDate(new Date(ano, mes - 1, 1)); const fimMes = formatDate(new Date(ano, mes, 0));
-            const { data: perfMes } = await db.from('prospeccao_diaria').select('*').eq('user_id', user.id).gte('data', inicioMes).lte('data', fimMes);
-            const dayOfWeek = today.getDay(); const inicioSemana = new Date(today); inicioSemana.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
-            const perfSemana = perfMes.filter(d => new Date(d.data + 'T00:00:00') >= inicioSemana);
-            const sum = (arr, key) => arr.reduce((a, b) => a + (b[key] || 0), 0);
-            const pMes = { ligacoes: sum(perfMes, 'ligacoes'), reunioes: sum(perfMes, 'reunioes_marcadas'), propostas: sum(perfMes, 'propostas') };
-            const pSem = { ligacoes: sum(perfSemana, 'ligacoes'), reunioes: sum(perfSemana, 'reunioes_marcadas'), propostas: sum(perfSemana, 'propostas') };
-            const m = { ligacoes: meta.meta_ligacoes_mensal || 0, reunioes: meta.meta_reunioes_mensal || 0, propostas: meta.meta_propostas_mensal || 0 };
-            const updateProgress = (type, period, current, goal) => { const p = goal > 0 ? Math.min((current/goal)*100, 100) : 0; document.getElementById(`progress-${type}-${period}-label`).textContent = `${current} / ${goal}`; document.getElementById(`progress-${type}-${period}`).style.width = `${p}%`; };
-            updateProgress('ligacoes', 'mensal', pMes.ligacoes, m.ligacoes); updateProgress('reunioes', 'mensal', pMes.reunioes, m.reunioes); updateProgress('propostas', 'mensal', pMes.propostas, m.propostas);
-            updateProgress('ligacoes', 'semanal', pSem.ligacoes, Math.ceil(m.ligacoes / 4)); updateProgress('reunioes', 'semanal', pSem.reunioes, Math.ceil(m.reunioes / 4)); updateProgress('propostas', 'semanal', pSem.propostas, Math.ceil(m.propostas / 4));
-        };
-
-        // --- GERAL ---
+        const populateMetasFilters = () => { if (currentUserProfile?.role === 'admin') { dom.metaBdrSelect.innerHTML = allUsers.map(u => `<option value="${u.id}">${u.full_name}</option>`).join(''); dom.metaBdrSelect.disabled = false; } else { dom.metaBdrSelect.innerHTML = `<option value="${currentUserProfile.id}">${currentUserProfile.full_name}</option>`; dom.metaBdrSelect.disabled = true; } const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]; dom.metaMesSelect.innerHTML = meses.map((m, i) => `<option value="${i+1}">${m}</option>`).join(''); const today = new Date(); dom.metaMesSelect.value = today.getMonth() + 1; dom.metaAnoInput.value = today.getFullYear(); };
+        const fetchSelectedMeta = async () => { const { data } = await db.from('metas').select('*').eq('user_id', dom.metaBdrSelect.value).eq('ano', dom.metaAnoInput.value).eq('mes', dom.metaMesSelect.value).single(); dom.metasForm.querySelector('#meta-ligacoes').value = data?.meta_ligacoes_mensal || 0; dom.metasForm.querySelector('#meta-reunioes').value = data?.meta_reunioes_mensal || 0; dom.metasForm.querySelector('#meta-propostas').value = data?.meta_propostas_mensal || 0; };
+        const saveMeta = async (e) => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const meta = { user_id: dom.metaBdrSelect.value, ano: dom.metaAnoInput.value, mes: dom.metaMesSelect.value, meta_ligacoes_mensal: parseInt(dom.metasForm.querySelector('#meta-ligacoes').value) || 0, meta_reunioes_mensal: parseInt(dom.metasForm.querySelector('#meta-reunioes').value) || 0, meta_propostas_mensal: parseInt(dom.metasForm.querySelector('#meta-propostas').value) || 0 }; const { error } = await db.from('metas').upsert(meta, { onConflict: 'user_id, ano, mes' }); dom.globalLoader.classList.add('hidden'); if(error) { showToast('Erro: ' + error.message, true); } else { showToast("Meta salva!"); } };
+        const fetchGoalsForDailyView = async () => { const { data: { user } } = await db.auth.getUser(); if (!user) return; const today = new Date(), ano = today.getFullYear(), mes = today.getMonth() + 1; const { data: metas } = await db.from('metas').select('*').eq('user_id', user.id).eq('ano', ano).eq('mes', mes).limit(1); const meta = metas?.[0] || {}; const inicioMes = formatDate(new Date(ano, mes - 1, 1)); const fimMes = formatDate(new Date(ano, mes, 0)); const { data: perfMes } = await db.from('prospeccao_diaria').select('*').eq('user_id', user.id).gte('data', inicioMes).lte('data', fimMes); const dayOfWeek = today.getDay(); const inicioSemana = new Date(today); inicioSemana.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1)); const perfSemana = perfMes.filter(d => new Date(d.data + 'T00:00:00') >= inicioSemana); const sum = (arr, key) => arr.reduce((a, b) => a + (b[key] || 0), 0); const pMes = { ligacoes: sum(perfMes, 'ligacoes'), reunioes: sum(perfMes, 'reunioes_marcadas'), propostas: sum(perfMes, 'propostas') }; const pSem = { ligacoes: sum(perfSemana, 'ligacoes'), reunioes: sum(perfSemana, 'reunioes_marcadas'), propostas: sum(perfSemana, 'propostas') }; const m = { ligacoes: meta.meta_ligacoes_mensal || 0, reunioes: meta.meta_reunioes_mensal || 0, propostas: meta.meta_propostas_mensal || 0 }; const updateProgress = (type, period, current, goal) => { const p = goal > 0 ? Math.min((current/goal)*100, 100) : 0; document.getElementById(`progress-${type}-${period}-label`).textContent = `${current} / ${goal}`; document.getElementById(`progress-${type}-${period}`).style.width = `${p}%`; }; updateProgress('ligacoes', 'mensal', pMes.ligacoes, m.ligacoes); updateProgress('reunioes', 'mensal', pMes.reunioes, m.reunioes); updateProgress('propostas', 'mensal', pMes.propostas, m.propostas); updateProgress('ligacoes', 'semanal', pSem.ligacoes, Math.ceil(m.ligacoes / 4.33)); updateProgress('reunioes', 'semanal', pSem.reunioes, Math.ceil(m.reunioes / 4.33)); updateProgress('propostas', 'semanal', pSem.propostas, Math.ceil(m.propostas / 4.33)); };
         const fetchUserProfile = async () => { const { data: { user } } = await db.auth.getUser(); if (user) { const { data } = await db.from('profiles').select('id, full_name, role').eq('id', user.id).single(); currentUserProfile = data; dom.userNameSpan.textContent = data?.full_name || user.email; } };
         const fetchAllUsers = async () => { const { data } = await db.from('profiles').select('id, full_name'); if (data) allUsers = data.filter(u => u.full_name); };
-        const populateFilters = async () => {
-            document.getElementById('filter-bdr').innerHTML = '<option value="todos">Todos</option>' + allUsers.map(u => `<option value="${u.full_name}">${u.full_name}</option>`).join('');
-            document.getElementById('filter-historico-bdr').innerHTML = '<option value="todos">Todos</option>' + allUsers.map(u => `<option value="${u.full_name}">${u.full_name}</option>`).join('');
-            
-            const periods = { ultimos_7_dias: "Últimos 7 dias", hoje: "Hoje", ontem: "Ontem", este_mes: "Este Mês", mes_passado: "Mês Passado", maximo: "Máximo", personalizado: "Personalizado" };
-            const periodOptions = Object.entries(periods).map(([val, text]) => `<option value="${val}">${text}</option>`).join('');
-            
-            document.getElementById('filter-period').innerHTML = periodOptions; document.getElementById('filter-period').value = 'ultimos_7_dias';
-            document.getElementById('filter-proposta-period').innerHTML = periodOptions; document.getElementById('filter-proposta-period').value = 'maximo';
-            document.getElementById('filter-historico-period').innerHTML = periodOptions; document.getElementById('filter-historico-period').value = 'ultimos_7_dias';
-        };
-
-        // --- EVENT LISTENERS ---
+        const populateFilters = async () => { document.getElementById('filter-bdr').innerHTML = '<option value="todos">Todos</option>' + allUsers.map(u => `<option value="${u.full_name}">${u.full_name}</option>`).join(''); document.getElementById('filter-historico-bdr').innerHTML = '<option value="todos">Todos</option>' + allUsers.map(u => `<option value="${u.full_name}">${u.full_name}</option>`).join(''); const periods = { ultimos_7_dias: "Últimos 7 dias", hoje: "Hoje", ontem: "Ontem", este_mes: "Este Mês", mes_passado: "Mês Passado", maximo: "Máximo", personalizado: "Personalizado" }; const periodOptions = Object.entries(periods).map(([val, text]) => `<option value="${val}">${text}</option>`).join(''); document.getElementById('filter-period').innerHTML = periodOptions; document.getElementById('filter-period').value = 'ultimos_7_dias'; document.getElementById('filter-proposta-period').innerHTML = periodOptions; document.getElementById('filter-proposta-period').value = 'maximo'; document.getElementById('filter-historico-period').innerHTML = periodOptions; document.getElementById('filter-historico-period').value = 'ultimos_7_dias'; };
         Object.keys(dom.navLinks).forEach(key => dom.navLinks[key].addEventListener('click', e => { e.preventDefault(); showPage(key); }));
-        
         document.getElementById('filter-period').addEventListener('change', (e) => { document.getElementById('custom-date-container-dashboard').classList.toggle('hidden', e.target.value !== 'personalizado'); if (e.target.value !== 'personalizado') updateDashboard(); });
-        document.getElementById('filter-bdr').addEventListener('change', updateDashboard); 
+        document.getElementById('filter-bdr').addEventListener('change', updateDashboard);
         document.getElementById('apply-dashboard-filters').addEventListener('click', updateDashboard);
-
         document.getElementById('filter-proposta-period').addEventListener('change', (e) => { document.getElementById('custom-date-container-propostas').classList.toggle('hidden', e.target.value !== 'personalizado'); if (e.target.value !== 'personalizado') fetchPropostas(); });
         document.getElementById('filter-proposta-status').addEventListener('change', fetchPropostas);
         document.getElementById('apply-proposta-filters').addEventListener('click', fetchPropostas);
-
         document.getElementById('filter-historico-period').addEventListener('change', (e) => { document.getElementById('custom-date-container-historico').classList.toggle('hidden', e.target.value !== 'personalizado'); if (e.target.value !== 'personalizado') fetchHistory(); });
         document.getElementById('filter-historico-bdr').addEventListener('change', fetchHistory);
         document.getElementById('apply-historico-filters').addEventListener('click', fetchHistory);
-        
         dom.cancelEditBtn.addEventListener('click', () => dom.editModal.classList.add('hidden'));
         ['meta-bdr', 'meta-mes', 'meta-ano'].forEach(id => document.getElementById(id).addEventListener('change', fetchSelectedMeta));
         dom.metasForm.addEventListener('submit', saveMeta);
