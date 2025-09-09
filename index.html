@@ -60,24 +60,58 @@
 <body class="bg-slate-100 dark:bg-brand-dark font-sans transition-colors duration-300">
 
     <div id="root">
-        <!-- TELA DE LOGIN -->
-        <div id="auth-container" class="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-brand-dark px-4">
-             <div class="w-full max-w-md p-8 space-y-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
-                <div class="text-center">
-                    <div class="flex items-center justify-center mb-4">
-                        <img src="Logo.png" alt="Semente Pro Logo" class="h-12 mr-2">
-                        <span class="text-3xl font-bold text-slate-800 dark:text-slate-200">Semente Pro</span>
+        <!-- ÁREA DE AUTENTICAÇÃO -->
+        <div id="auth-page" class="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-brand-dark px-4">
+            <div class="w-full max-w-md">
+                <!-- TELA DE LOGIN -->
+                <div id="auth-container">
+                    <div class="p-8 space-y-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
+                        <div class="text-center">
+                            <div class="flex items-center justify-center mb-4">
+                                <img src="Logo.png" alt="Semente Pro Logo" class="h-12 mr-2">
+                                <span class="text-3xl font-bold text-slate-800 dark:text-slate-200">Semente Pro</span>
+                            </div>
+                            <h2 class="text-xl text-slate-600 dark:text-slate-400">Acesse sua conta</h2>
+                        </div>
+                        <form id="login-form" class="space-y-6">
+                            <div><label for="email" class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label><input type="email" id="email" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="voce@exemplo.com"></div>
+                            <div><label for="password" class="text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label><input type="password" id="password" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="********"></div>
+                            <p id="error-message" class="text-sm text-red-600"></p>
+                            <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Entrar</button>
+                        </form>
+                        <p class="text-center text-sm text-slate-600 dark:text-slate-400">
+                            Não tem uma conta?
+                            <a href="#" id="go-to-signup" class="font-semibold text-brand-accent hover:underline">Criar conta</a>
+                        </p>
                     </div>
-                    <h2 class="text-xl text-slate-600 dark:text-slate-400">Acesse sua conta</h2>
                 </div>
-                <form id="login-form" class="space-y-6">
-                    <div><label for="email" class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label><input type="email" id="email" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="voce@exemplo.com"></div>
-                    <div><label for="password" class="text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label><input type="password" id="password" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="********"></div>
-                    <p id="error-message" class="text-sm text-red-600"></p>
-                    <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Entrar</button>
-                </form>
-             </div>
+
+                <!-- TELA DE CADASTRO -->
+                 <div id="signup-container" class="hidden">
+                    <div class="p-8 space-y-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
+                        <div class="text-center">
+                            <div class="flex items-center justify-center mb-4">
+                                <img src="Logo.png" alt="Semente Pro Logo" class="h-12 mr-2">
+                                <span class="text-3xl font-bold text-slate-800 dark:text-slate-200">Semente Pro</span>
+                            </div>
+                            <h2 class="text-xl text-slate-600 dark:text-slate-400">Crie sua conta</h2>
+                        </div>
+                        <form id="signup-form" class="space-y-6">
+                            <div><label for="signup-name" class="text-sm font-medium text-slate-700 dark:text-slate-300">Nome Completo</label><input type="text" id="signup-name" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="Seu nome"></div>
+                            <div><label for="signup-email" class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label><input type="email" id="signup-email" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="voce@exemplo.com"></div>
+                            <div><label for="signup-password" class="text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label><input type="password" id="signup-password" required class="w-full px-3 py-2 mt-1 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-md shadow-sm" placeholder="********"></div>
+                            <p id="signup-error-message" class="text-sm text-red-600"></p>
+                            <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-md">Criar Conta</button>
+                        </form>
+                        <p class="text-center text-sm text-slate-600 dark:text-slate-400">
+                            Já tem uma conta?
+                            <a href="#" id="go-to-login" class="font-semibold text-brand-accent hover:underline">Entrar</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <!-- APLICAÇÃO PRINCIPAL -->
         <div id="app-container" class="min-h-screen hidden">
@@ -225,7 +259,7 @@
         const { createClient } = supabase;
         const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        const dom = { authContainer: document.getElementById('auth-container'), appContainer: document.getElementById('app-container'), loginForm: document.getElementById('login-form'), logoutButton: document.getElementById('logout-button'), errorMessage: document.getElementById('error-message'), editModal: document.getElementById('edit-modal'), editForm: document.getElementById('edit-form'), cancelEditBtn: document.getElementById('cancel-edit-btn'), pages: { dashboard: document.getElementById('page-dashboard'), diario: document.getElementById('page-diario'), propostas: document.getElementById('page-propostas'), historico: document.getElementById('page-historico'), metas: document.getElementById('page-metas') }, navLinks: { dashboard: document.getElementById('nav-dashboard'), diario: document.getElementById('nav-diario'), propostas: document.getElementById('nav-propostas'), historico: document.getElementById('nav-historico'), metas: document.getElementById('nav-metas') }, dailyForm: document.getElementById('daily-form'), propostasDetailsContainer: document.getElementById('propostas-details-container'), historyTableBody: document.getElementById('history-table-body'), propostasTableBody: document.getElementById('propostas-table-body'), historyLoader: document.getElementById('history-loader'), propostasLoader: document.getElementById('propostas-loader'), globalLoader: document.getElementById('global-loader'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), userNameSpan: document.getElementById('user-name'), exportCsvBtn: document.getElementById('export-csv-btn'), metasForm: document.getElementById('metas-form'), metaBdrSelect: document.getElementById('meta-bdr'), metaMesSelect: document.getElementById('meta-mes'), metaAnoInput: document.getElementById('meta-ano'), rankingList: document.getElementById('ranking-list'), };
+        const dom = { authPage: document.getElementById('auth-page'), authContainer: document.getElementById('auth-container'), signupContainer: document.getElementById('signup-container'), appContainer: document.getElementById('app-container'), loginForm: document.getElementById('login-form'), signupForm: document.getElementById('signup-form'), logoutButton: document.getElementById('logout-button'), errorMessage: document.getElementById('error-message'), signupErrorMessage: document.getElementById('signup-error-message'), goToSignup: document.getElementById('go-to-signup'), goToLogin: document.getElementById('go-to-login'), editModal: document.getElementById('edit-modal'), editForm: document.getElementById('edit-form'), cancelEditBtn: document.getElementById('cancel-edit-btn'), pages: { dashboard: document.getElementById('page-dashboard'), diario: document.getElementById('page-diario'), propostas: document.getElementById('page-propostas'), historico: document.getElementById('page-historico'), metas: document.getElementById('page-metas') }, navLinks: { dashboard: document.getElementById('nav-dashboard'), diario: document.getElementById('nav-diario'), propostas: document.getElementById('nav-propostas'), historico: document.getElementById('nav-historico'), metas: document.getElementById('nav-metas') }, dailyForm: document.getElementById('daily-form'), propostasDetailsContainer: document.getElementById('propostas-details-container'), historyTableBody: document.getElementById('history-table-body'), propostasTableBody: document.getElementById('propostas-table-body'), historyLoader: document.getElementById('history-loader'), propostasLoader: document.getElementById('propostas-loader'), globalLoader: document.getElementById('global-loader'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), userNameSpan: document.getElementById('user-name'), exportCsvBtn: document.getElementById('export-csv-btn'), metasForm: document.getElementById('metas-form'), metaBdrSelect: document.getElementById('meta-bdr'), metaMesSelect: document.getElementById('meta-mes'), metaAnoInput: document.getElementById('meta-ano'), rankingList: document.getElementById('ranking-list'), };
         let mainChart, trendChart, toastTimeout, currentUserProfile = null, historyData = [], allUsers = [];
         const showToast = (message, isError = false) => { clearTimeout(toastTimeout); dom.toastMessage.textContent = message; dom.toast.className = `fixed top-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${isError ? 'bg-red-600' : 'bg-brand-accent'}`; dom.toast.classList.remove('translate-x-[120%]'); toastTimeout = setTimeout(() => dom.toast.classList.add('translate-x-[120%]'), 3000); };
         const formatDate = (date) => date.toISOString().split('T')[0];
@@ -235,9 +269,35 @@
         const initializeCharts = () => { const isDarkMode = document.documentElement.classList.contains('dark'); const chartOptions = { series: [], chart: { toolbar: { show: true }, animations: { easing: 'easeout', speed: 800 } }, dataLabels: { enabled: false }, stroke: { curve: 'smooth', width: 2 }, grid: { borderColor: isDarkMode ? '#334155' : '#e2e8f0', strokeDashArray: 4 }, tooltip: { theme: isDarkMode ? 'dark' : 'light', x: { format: 'dd MMM' } }, noData: { text: 'Sem dados para o período selecionado.', style: { color: '#64748b' } }, theme: { mode: isDarkMode ? 'dark' : 'light' } }; const barOptions = { ...chartOptions, chart: { ...chartOptions.chart, type: 'bar', height: 350 }, plotOptions: { bar: { horizontal: false, columnWidth: '60%', borderRadius: 6 } }, xaxis: { categories: ['Ligações', 'Conexões', 'Con. Decisor', 'Reu. Marcadas', 'Reu. Realizadas', 'Reu. Qualificadas', 'Propostas'], labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, yaxis: { labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, fill: { opacity: 1 }, colors: ['#6464FF', '#8a8aff', '#b0b0ff'] }; mainChart = new ApexCharts(document.querySelector("#chart-container"), barOptions); mainChart.render(); const lineOptions = { ...chartOptions, chart: { ...chartOptions.chart, type: 'line', height: 350, }, xaxis: { type: 'datetime', labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, yaxis: { labels: { style: { colors: isDarkMode ? '#94a3b8' : '#64748b' } } }, colors: ['#6464FF'] }; trendChart = new ApexCharts(document.querySelector("#trend-chart-container"), lineOptions); trendChart.render(); };
         const initializeApp = async () => { dom.dailyForm.data.valueAsDate = new Date(); initializeCharts(); await fetchUserProfile(); await fetchAllUsers(); await populateFilters(); adjustUIForRole(); showPage('dashboard'); };
         const showPage = (pageName) => { Object.values(dom.pages).forEach(p => p.classList.add('hidden')); Object.values(dom.navLinks).forEach(l => l.classList.remove('active')); dom.pages[pageName].classList.remove('hidden'); dom.navLinks[pageName].classList.add('active'); const pageActions = { historico: fetchHistory, dashboard: updateDashboard, diario: fetchGoalsForDailyView, metas: initializeMetasPage, propostas: fetchPropostas }; if (pageActions[pageName]) pageActions[pageName](); };
-        db.auth.onAuthStateChange((_, session) => { dom.authContainer.classList.toggle('hidden', !!session); dom.appContainer.classList.toggle('hidden', !session); if (session) initializeApp(); });
+        db.auth.onAuthStateChange((_, session) => { dom.authPage.classList.toggle('hidden', !!session); dom.appContainer.classList.toggle('hidden', !session); if (session) initializeApp(); });
         dom.loginForm.addEventListener('submit', async (e) => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const { error } = await db.auth.signInWithPassword({ email: dom.loginForm.email.value, password: dom.loginForm.password.value }); dom.globalLoader.classList.add('hidden'); dom.errorMessage.textContent = error ? 'Email ou senha inválidos.' : ''; if (!error) dom.loginForm.reset(); });
+        dom.signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            dom.globalLoader.classList.remove('hidden');
+            const name = dom.signupForm['signup-name'].value;
+            const email = dom.signupForm['signup-email'].value;
+            const password = dom.signupForm['signup-password'].value;
+            const { data, error } = await db.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { full_name: name }
+                }
+            });
+            dom.globalLoader.classList.add('hidden');
+            if (error) {
+                dom.signupErrorMessage.textContent = 'Erro ao criar conta: ' + error.message;
+            } else {
+                showToast('Conta criada! Verifique seu e-mail para confirmação.');
+                dom.signupContainer.classList.add('hidden');
+                dom.authContainer.classList.remove('hidden');
+                dom.signupForm.reset();
+            }
+        });
         dom.logoutButton.addEventListener('click', () => db.auth.signOut());
+        dom.goToSignup.addEventListener('click', (e) => { e.preventDefault(); dom.authContainer.classList.add('hidden'); dom.signupContainer.classList.remove('hidden'); });
+        dom.goToLogin.addEventListener('click', (e) => { e.preventDefault(); dom.signupContainer.classList.add('hidden'); dom.authContainer.classList.remove('hidden'); });
+
         const adjustUIForRole = () => { const metaBdrContainer = document.getElementById('meta-bdr-container'); if (currentUserProfile?.role !== 'admin') { if(metaBdrContainer) metaBdrContainer.style.display = 'none'; } else { if(metaBdrContainer) metaBdrContainer.style.display = 'block'; } };
         document.getElementById('propostas').addEventListener('input', (e) => { const count = parseInt(e.target.value) || 0; dom.propostasDetailsContainer.innerHTML = ''; if (count > 0) dom.propostasDetailsContainer.innerHTML = '<h3 class="font-semibold text-slate-700 dark:text-slate-300">Detalhes das Propostas</h3>' + Array.from({ length: count }, (_, i) => `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-200 dark:border-slate-600"><div class="form-group"><label for="cliente-${i+1}" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Cliente ${i+1}</label><input type="text" id="cliente-${i+1}" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 proposal-cliente" placeholder="Nome da Empresa"></div><div class="form-group"><label for="valor-${i+1}" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Valor (R$) ${i+1}</label><input type="number" id="valor-${i+1}" min="0" step="0.01" required class="mt-1 block w-full border rounded-md p-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 proposal-valor" placeholder="1500.00"></div></div>`).join(''); });
         dom.dailyForm.addEventListener('submit', async (e) => { e.preventDefault(); dom.globalLoader.classList.remove('hidden'); const { data: { user } } = await db.auth.getUser(); if (!user) { showToast("Sessão expirada.", true); dom.globalLoader.classList.add('hidden'); return; } const dailyData = { user_id: user.id, bdr_nome: currentUserProfile?.full_name, data: dom.dailyForm.data.value, ligacoes: parseInt(dom.dailyForm.ligacoes.value) || 0, conexoes: parseInt(dom.dailyForm.conexoes.value) || 0, conexoes_decisor: parseInt(dom.dailyForm.conexoes_decisor.value) || 0, reunioes_marcadas: parseInt(dom.dailyForm.reunioes_marcadas.value) || 0, reunioes_realizadas: parseInt(dom.dailyForm.reunioes_realizadas.value) || 0, reunioes_qualificadas: parseInt(dom.dailyForm.reunioes_qualificadas.value) || 0, propostas: parseInt(dom.dailyForm.propostas.value) || 0, observacoes: dom.dailyForm.observacoes.value }; const { data: inserted, error } = await db.from('prospeccao_diaria').insert(dailyData).select().single(); if (error) { showToast('Erro: ' + error.message, true); dom.globalLoader.classList.add('hidden'); return; } if (dailyData.propostas > 0) { const propostas = Array.from({ length: dailyData.propostas }, (_, i) => ({ user_id: user.id, bdr_nome: currentUserProfile?.full_name, prospeccao_diaria_id: inserted.id, nome_cliente: document.getElementById(`cliente-${i+1}`).value, valor: parseFloat(document.getElementById(`valor-${i+1}`).value), data_proposta: dailyData.data })); const { error: pError } = await db.from('propostas').insert(propostas); if (pError) showToast('Lançamento salvo, mas erro ao salvar propostas: ' + pError.message, true); } showToast('Dados salvos com sucesso!'); dom.dailyForm.reset(); dom.propostasDetailsContainer.innerHTML = ''; dom.dailyForm.data.valueAsDate = new Date(); await Promise.all([updateDashboard(), fetchGoalsForDailyView()]); dom.globalLoader.classList.add('hidden'); });
